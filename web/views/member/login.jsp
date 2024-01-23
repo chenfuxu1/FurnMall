@@ -1,8 +1,11 @@
-<!DOCTYPE html>
+<%@ page import="com.cfx.furns.utils.Logit" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <!--设置 base 标签，后续改为 jsp 再进行优化-->
-    <base href="http://localhost:8080/furnMall/">
+    <%--<base href="<http://localhost:8080/furnMall>/">--%>
+    <%--更加灵活的设置 base 标签--%>
+    <base href="<%=request.getContextPath() + "/"%>">
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
     <title>荒天帝-家居网购</title>
@@ -75,6 +78,14 @@
 </head>
 
 <body>
+
+<%
+    // 获取 LoginServlet 携带的回显数据
+    String loginErrorMsg = (String) request.getAttribute("login_error_msg");
+    String loginUserName = (String) request.getAttribute("login_user_name");
+    Logit.d("TAG", "loginErrorMsg: " + loginErrorMsg + " loginUserName: " + loginUserName);
+%>
+
 <!-- Header Area start  -->
 <div class="header section">
     <!-- Header Top Message Start -->
@@ -133,9 +144,9 @@
                             <div class="login-form-container">
                                 <div class="login-register-form">
                                     <span class="login_error_msg"
-                                          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" ></span>
+                                          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" >${login_error_msg}</span>
                                     <form action="login" method="post">
-                                        <input type="text" name="login_user_name" id="login_user_name" placeholder="Username"/>
+                                        <input type="text" name="login_user_name" id="login_user_name" placeholder="Username" value="${login_user_name}"/>
                                         <input type="password" name="login_password" id="login_password" placeholder="Password"/>
                                         <div class="button-box">
                                             <div class="login-toggle-btn">
@@ -158,7 +169,7 @@
                                           style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" ></span>
                                     <!--注册表单-->
                                     <form action="register" method="post">
-                                        <input type="text" id="username" name="username" placeholder="Username"/>
+                                        <input type="text" id="username" name="username" placeholder="Username" />
                                         <input type="password" id="password" name="password" placeholder="输入密码"/>
                                         <input type="password" id="repwd" name="repassword" placeholder="确认密码"/>
                                         <input name="email" id="email" placeholder="电子邮件" type="email"/>
@@ -216,7 +227,7 @@
                                         <li class="li"><a class="single-link" href="my-account.html">我的账号</a>
                                         </li>
                                         <li class="li"><a class="single-link" href="cart.html">我的购物车</a></li>
-                                        <li class="li"><a class="single-link" href="login.html">登录</a></li>
+                                        <li class="li"><a class="single-link" href="login.jsp">登录</a></li>
                                         <li class="li"><a class="single-link" href="wishlist.html">感兴趣的</a></li>
                                         <li class="li"><a class="single-link" href="checkout.html">结账</a></li>
                                     </ul>

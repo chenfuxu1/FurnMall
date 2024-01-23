@@ -21,18 +21,23 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     private static final String TAG = "LoginServlet";
     private static final String DISPATCHER_LOGIN_SUCCESS = "/views/member/login_success.html";
-    private static final String DISPATCHER_LOGIN_FAILED = "/views/member/login.html";
+    private static final String DISPATCHER_LOGIN_FAILED = "/views/member/login.jsp";
     private ILoginService mLoginService = new LoginServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Logit.d(TAG, "doGet...");
+        req.setCharacterEncoding("utf-8");
         String userName = req.getParameter("login_user_name");
         String password = req.getParameter("login_password");
         Logit.d(TAG, "userName: " + userName + " password: " + password);
         Member member = new Member(0, userName, password, null);
         boolean isSucceed = mLoginService.isLoginSucceed(member);
+
         if (!isSucceed) {
+            // 登录失败，将失败的错误信息回送到前端
+            req.setAttribute("login_error_msg", "用户名或密码错误！");
+            req.setAttribute("login_user_name", userName);
             // 登录失败，转发到登录界面
             Logit.d(TAG, "登录失败！");
             req.getRequestDispatcher(DISPATCHER_LOGIN_FAILED).forward(req, resp);
