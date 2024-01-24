@@ -145,7 +145,9 @@
                                 <div class="login-register-form">
                                     <span class="login_error_msg"
                                           style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" >${login_error_msg}</span>
-                                    <form action="login" method="post">
+                                    <form action="member" method="post">
+                                        <%--隐藏域，表明是登录的表单--%>
+                                        <input type="hidden" name="action" value="login">
                                         <input type="text" name="login_user_name" id="login_user_name" placeholder="Username" value="${login_user_name}"/>
                                         <input type="password" name="login_password" id="login_password" placeholder="Password"/>
                                         <div class="button-box">
@@ -168,7 +170,9 @@
                                     <span class="errorMsg"
                                           style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" ></span>
                                     <!--注册表单-->
-                                    <form action="register" method="post">
+                                    <form action="member" method="post">
+                                        <%--隐藏域，表明是注册的表单--%>
+                                        <input type="hidden" name="action" value="register">
                                         <input type="text" id="username" name="username" placeholder="Username" />
                                         <input type="password" id="password" name="password" placeholder="输入密码"/>
                                         <input type="password" id="repwd" name="repassword" placeholder="确认密码"/>
