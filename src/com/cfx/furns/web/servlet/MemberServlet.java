@@ -8,7 +8,6 @@ import com.cfx.furns.service.serviceimpl.MemberServiceImpl;
 import com.cfx.furns.utils.Logit;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,10 +16,10 @@ import java.io.IOException;
  * Project: FurnMall
  * Create By: Chen.F.X
  * DateTime: 2024/1/23 23:34
- *
+ * <p>
  * 合并用户登录 / 注册功能的 servlet
  **/
-public class MemberServlet extends HttpServlet {
+public class MemberServlet extends BaseServlet {
     private static final String TAG = "MemberServlet";
     private static final String ACTION_LOGIN = "login"; // 登录的表单
     private static final String ACTION_REGISTER = "register"; // 注册的表单
@@ -33,31 +32,11 @@ public class MemberServlet extends HttpServlet {
     private String mUserName = "";
     private String mPassword = "";
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Logit.d(TAG, "doGet...");
-        req.setCharacterEncoding("utf-8");
-        resp.setContentType("text/html;charset=utf-8");
-        String action = req.getParameter("action");
-        Logit.d(TAG, "action: " + action);
-
-        if (ACTION_LOGIN.equals(action)) {
-            // 登录表单
-            login(req, resp);
-        } else if (ACTION_REGISTER.equals(action)) {
-            // 注册表单
-            registter(req, resp);
-        } else {
-            resp.getWriter().write("<h1>请求参数有误！</h1>");
-        }
-    }
-
     /**
      * 处理登录的请求
+     *
      * @param req
      * @param resp
-     * @throws ServletException
-     * @throws IOException
      */
     private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         mUserName = req.getParameter("login_user_name");
@@ -82,12 +61,12 @@ public class MemberServlet extends HttpServlet {
 
     /**
      * 处理注册的请求
+     *
      * @param req
      * @param resp
-     * @throws ServletException
-     * @throws IOException
      */
-    private void registter(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         mUserName = req.getParameter("username");
         mPassword = req.getParameter("password");
         String email = req.getParameter("email");
@@ -96,6 +75,7 @@ public class MemberServlet extends HttpServlet {
         if (existUserName) {
             // 用户名存在，返回注册失败界面
             req.getRequestDispatcher(DISPATCHER_REGISTER_FAIL).forward(req, resp);
+            return;
         }
         // 用户名不存在，开始注册用户
         Member member = new Member(0, mUserName, mPassword, email);
@@ -103,14 +83,9 @@ public class MemberServlet extends HttpServlet {
         if (!result) {
             // 注册失败，返回失败界面
             req.getRequestDispatcher(DISPATCHER_REGISTER_FAIL).forward(req, resp);
+            return;
         }
         // 注册成功，返回成功界面
         req.getRequestDispatcher(DISPATCHER_REGISTER_SUCCESS).forward(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Logit.d(TAG, "doPost...");
-        doGet(req, resp);
     }
 }
