@@ -33,7 +33,7 @@ public class MemberDaoImpl extends BasicDao<Member> implements IMemberDao {
         if (member == null) {
             return 0;
         }
-        String sql = "insert into member values(null, ?, ?, ?)";
+        String sql = "insert into " + TABLE_MEMBER + " values(null, ?, ?, ?)";
         return update(sql, member.getUserName(), MD5Utils.stringToMD5(member.getPassword()), member.getEmail());
     }
 

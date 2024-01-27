@@ -5,18 +5,18 @@ package com.cfx.furns.entity;
  * Create By: Chen.F.X
  * DateTime: 2024/1/20 13:11
  *
- * 会员实体类
+ * 管理员实体类
  **/
-public class Member {
+public class Admin {
     private Integer mId; // id
     private String mUserName; // 用户名
     private String mPassword; // 密码
     private String mEmail; // 邮箱
 
-    public Member() {
+    public Admin() {
     }
 
-    public Member(Integer id, String username, String password, String email) {
+    public Admin(Integer id, String username, String password, String email) {
         mId = id;
         mUserName = username;
         mPassword = password;
@@ -57,7 +57,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member{" +
+        return "Admin{" +
                 "mId=" + mId +
                 ", mUserName='" + mUserName + '\'' +
                 ", mPassword='" + mPassword + '\'' +

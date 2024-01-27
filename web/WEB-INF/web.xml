@@ -33,4 +33,25 @@
         <servlet-name>MemberServlet</servlet-name>
         <url-pattern>/member</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.cfx.furns.web.servlet.AdminServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FurnServlet</servlet-name>
+        <servlet-class>com.cfx.furns.web.servlet.FurnServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FurnServlet</servlet-name>
+        <!--这样设计方便后续过滤器直接过滤 manage 下的文件需要登录才能访问-->
+        <url-pattern>/manage/furn</url-pattern>
+    </servlet-mapping>
 </web-app>

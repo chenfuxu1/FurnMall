@@ -7,4 +7,6 @@ package com.cfx.furns.utils;
  **/
 public class Constants {
     public static final String TABLE_MEMBER = "member"; // 会员表名
+    public static final String TABLE_ADMIN = "admin"; // 管理员表名
+    public static final String TABLE_FURN = "furn"; // 家居表
 }
