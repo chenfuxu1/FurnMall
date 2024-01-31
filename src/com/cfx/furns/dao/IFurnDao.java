@@ -14,4 +14,7 @@ import java.util.List;
 public interface IFurnDao {
     // 获取所有的家居
     public List<Furn> getAllFurns();
+
+    // 添加一条家居数据到数据库
+    public boolean addFurn(Furn furn);
 }

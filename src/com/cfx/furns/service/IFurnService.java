@@ -14,4 +14,7 @@ import java.util.List;
 public interface IFurnService {
     // 获取所有的家居
     public List<Furn> getAllFurns();
+
+    // 添加一条家居
+    public boolean addFurn(Furn furn);
 }

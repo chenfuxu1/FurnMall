@@ -4,6 +4,7 @@ import com.cfx.furns.dao.IFurnDao;
 import com.cfx.furns.dao.daoimpl.FurnDaoImpl;
 import com.cfx.furns.entity.Furn;
 import com.cfx.furns.service.IFurnService;
+import com.cfx.furns.utils.Logit;
 
 import java.util.List;
 
@@ -15,10 +16,20 @@ import java.util.List;
  * 家居 service 接口实现类
  **/
 public class FurnServiceImpl implements IFurnService {
+    private static final String TAG = "FurnServiceImpl";
     private IFurnDao mFurnDao = new FurnDaoImpl();
 
     @Override
     public List<Furn> getAllFurns() {
         return mFurnDao.getAllFurns();
+    }
+
+    @Override
+    public boolean addFurn(Furn furn) {
+        if (furn == null) {
+            Logit.d(TAG, "添加的 furn 为空");
+            return false;
+        }
+        return mFurnDao.addFurn(furn);
     }
 }

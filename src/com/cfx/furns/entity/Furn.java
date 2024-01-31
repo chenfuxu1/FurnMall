@@ -2,6 +2,8 @@ package com.cfx.furns.entity;
 
 import java.math.BigDecimal;
 
+import static com.cfx.furns.utils.Constants.DEFAULT_IMG_URL;
+
 /**
  * Project: FurnMall
  * Create By: Chen.F.X
@@ -17,7 +19,7 @@ public class Furn {
     private BigDecimal mPrice; // 价格
     private Integer mSales; // 销量
     private Integer mStock; // 库存量
-    private String mImgUrl; // 家居图片 url
+    private String mImgUrl = DEFAULT_IMG_URL; // 家居图片 url
 
     public Furn() {
     }
@@ -29,7 +31,9 @@ public class Furn {
         mPrice = price;
         mSales = sales;
         mStock = stock;
-        mImgUrl = imgUrl;
+        if (!(imgUrl == null || "".equals(imgUrl))) {
+            mImgUrl = imgUrl;
+        }
     }
 
     public Integer getId() {
