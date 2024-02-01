@@ -17,4 +17,7 @@ public interface IFurnDao {
 
     // 添加一条家居数据到数据库
     public boolean addFurn(Furn furn);
+
+    // 根据 id 删除某条家居信息
+    public boolean deleteFurnById(int furnId);
 }

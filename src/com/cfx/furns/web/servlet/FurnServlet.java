@@ -6,14 +6,11 @@ import com.cfx.furns.service.serviceimpl.FurnServiceImpl;
 import com.cfx.furns.utils.DataUtils;
 import com.cfx.furns.utils.Logit;
 import com.cfx.furns.utils.StringToNumUtils;
-import org.apache.commons.beanutils.BeanUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -134,6 +131,35 @@ public class FurnServlet extends BaseServlet {
         /**
          * 方式 3：重定向
          */
+        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+    }
+
+    /**
+     * 删除某条家居
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void deleteFurn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "deleteFurn...");
+        String furnId = req.getParameter("furnId");
+        Integer integerFurnId = StringToNumUtils.parseInteger(furnId);
+        Logit.d(TAG, "integerFurnId: " + integerFurnId);
+        if (integerFurnId < 0) {
+            Logit.d(TAG, "integerFurnId is error");
+            req.getRequestDispatcher(DISPATCHER_FURN_MANAGE).forward(req, resp);
+            return;
+        }
+        boolean isDeleteSuccess = mFurnService.deleteFurnById(integerFurnId);
+        if (!isDeleteSuccess) {
+            // 删除失败
+            Logit.d(TAG, "delete error");
+            req.getRequestDispatcher(DISPATCHER_FURN_MANAGE).forward(req, resp);
+            return;
+        }
+        Logit.d(TAG, "delete success");
+        // 删除成功，重定向到 DISPATCHER_SHOW_FURN 界面
         resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
     }
 }

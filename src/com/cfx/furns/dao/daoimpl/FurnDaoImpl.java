@@ -38,4 +38,18 @@ public class FurnDaoImpl extends BasicDao<Furn> implements IFurnDao {
                 update(sql, furn.getName(), furn.getMaker(), furn.getPrice(), furn.getSales(), furn.getStock(), furn.getImgUrl());
         return update > 0;
     }
+
+    // 根据 id 删除某条家居信息
+    @Override
+    public boolean deleteFurnById(int furnId) {
+        if (furnId < 0) {
+            Logit.d(TAG, "输入 id 有误");
+            return false;
+        }
+        String sql = "delete from " + TABLE_FURN + " where id = ?";
+        int update = update(sql, furnId);
+        return update > 0;
+    }
+
+
 }

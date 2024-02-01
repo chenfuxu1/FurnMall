@@ -12,13 +12,32 @@
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css">
+    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("i.icon-close").click(function () {
+                /**
+                 * 找到当前删除家居的姓名
+                 * $(this).parent() 表示当前节点的父节点 a class="delete_class"
+                 * $(this).parent().parent() 表示 a class="delete_class" 的父节点 td class="product-remove"
+                 * $(this).parent().parent().parent() 表示 td class="product-remove" 的父节点 <tr>
+                 * find("td:eq(1)") 表示 <tr> 下面的第二个子节点
+                 */
+                var furnName = $(this).parent().parent().parent().find("td:eq(1)").text();
+                var result = confirm("确定删除家居 【" + furnName + "】 信息吗");
+                return result;
+            })
+        })
+    </script>
 </head>
 
 <body>
 
 <%
     Object furns = request.getAttribute("furns");
+    if (furns != null) {
         Logit.d("TAG", furns.toString());
+    }
 %>
 
 <!-- Header Area start  -->
@@ -52,6 +71,9 @@
                         <!-- Single Wedge Start -->
                         <div class="header-bottom-set dropdown">
                             <a href="#">后台管理</a>
+                        </div>
+                        <div class="header-bottom-set dropdown">
+                            <a href="views/manage/furn_add.jsp">添加家居</a>
                         </div>
                     </div>
                 </div>
@@ -111,7 +133,7 @@
                                     <td class="product_stock">${furn.stock}</td>
                                     <td class="product-remove">
                                         <a href="#"><i class="icon-pencil"></i></a>
-                                        <a href="#"><i class="icon-close"></i></a>
+                                        <a class="delete_class" href="manage/furn?action=deleteFurn&furnId=${furn.id}"><i class="icon-close"></i></a>
                                     </td>
                                 </tr>
                             </c:forEach>

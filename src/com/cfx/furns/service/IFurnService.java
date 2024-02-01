@@ -17,4 +17,7 @@ public interface IFurnService {
 
     // 添加一条家居
     public boolean addFurn(Furn furn);
+
+    // 根据 id 删除某条家居信息
+    public boolean deleteFurnById(int furnId);
 }

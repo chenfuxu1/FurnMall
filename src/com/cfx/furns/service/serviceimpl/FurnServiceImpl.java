@@ -32,4 +32,13 @@ public class FurnServiceImpl implements IFurnService {
         }
         return mFurnDao.addFurn(furn);
     }
+
+    @Override
+    public boolean deleteFurnById(int furnId) {
+        if (furnId < 0) {
+            Logit.d(TAG, "输入 id 有误");
+            return false;
+        }
+        return mFurnDao.deleteFurnById(furnId);
+    }
 }
