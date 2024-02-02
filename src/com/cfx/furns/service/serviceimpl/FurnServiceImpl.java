@@ -41,4 +41,26 @@ public class FurnServiceImpl implements IFurnService {
         }
         return mFurnDao.deleteFurnById(furnId);
     }
+
+    @Override
+    public Furn queryFurnById(int furnId) {
+        if (furnId < 0) {
+            Logit.d(TAG, "输入 id 有误");
+            return null;
+        }
+        return mFurnDao.queryFurnById(furnId);
+    }
+
+    @Override
+    public boolean updateFurn(Furn furn) {
+        if (furn == null) {
+            Logit.d(TAG, "输入家居为空");
+            return false;
+        }
+        if (furn.getId() == null) {
+            Logit.d(TAG, "输入家居 id 为空");
+            return false;
+        }
+        return mFurnDao.updateFurn(furn);
+    }
 }

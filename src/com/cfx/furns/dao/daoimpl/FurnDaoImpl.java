@@ -51,5 +51,28 @@ public class FurnDaoImpl extends BasicDao<Furn> implements IFurnDao {
         return update > 0;
     }
 
+    @Override
+    public Furn queryFurnById(int furnId) {
+        if (furnId < 0) {
+            Logit.d(TAG, "输入 id 有误");
+            return null;
+        }
+        String sql = "select id, `name`, maker, price, sales, stock, img_url imgUrl from " + TABLE_FURN + " where id = ?";
+        return querySingle(sql, Furn.class, furnId);
+    }
 
+    @Override
+    public boolean updateFurn(Furn furn) {
+        if (furn == null) {
+            Logit.d(TAG, "输入家居为空");
+            return false;
+        }
+        if (furn.getId() == null) {
+            Logit.d(TAG, "输入家居 id 为空");
+            return false;
+        }
+        String sql = "update " + TABLE_FURN + " set name = ?, maker = ?, price = ?, sales = ?, stock = ?, img_url = ? where id = ?";
+        int update = update(sql, furn.getName(), furn.getMaker(), furn.getPrice(), furn.getSales(), furn.getStock(), furn.getImgUrl(), furn.getId());
+        return update > 0;
+    }
 }

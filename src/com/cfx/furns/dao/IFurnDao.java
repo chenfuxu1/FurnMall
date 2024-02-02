@@ -20,4 +20,10 @@ public interface IFurnDao {
 
     // 根据 id 删除某条家居信息
     public boolean deleteFurnById(int furnId);
+
+    // 根据 id 查询某条家居信息
+    public Furn queryFurnById(int furnId);
+
+    // 更新某条家居信息
+    public boolean updateFurn(Furn furn);
 }

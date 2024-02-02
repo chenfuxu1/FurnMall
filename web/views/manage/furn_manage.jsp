@@ -132,7 +132,7 @@
                                     <td class="product_sales">${furn.sales}</td>
                                     <td class="product_stock">${furn.stock}</td>
                                     <td class="product-remove">
-                                        <a href="#"><i class="icon-pencil"></i></a>
+                                        <a href="manage/furn?action=queryFurnById&furnId=${furn.id}"><i class="icon-pencil"></i></a>
                                         <a class="delete_class" href="manage/furn?action=deleteFurn&furnId=${furn.id}"><i class="icon-close"></i></a>
                                     </td>
                                 </tr>

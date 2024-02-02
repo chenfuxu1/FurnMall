@@ -24,4 +24,10 @@ public class TestFurnService {
             Logit.d(TAG, furn.toString());
         }
     }
+
+    @Test
+    public void queryFurnById() {
+        Furn furn = mFurnService.queryFurnById(1);
+        Logit.d(TAG, "furn: " + furn);
+    }
 }

@@ -24,6 +24,7 @@ public class FurnServlet extends BaseServlet {
     private static final String TAG = "FurnServlet";
     private static final String DISPATCHER_FURN_MANAGE = "/views/manage/furn_manage.jsp";
     private static final String DISPATCHER_FURN_ADD = "/views/manage/furn_add.jsp";
+    private static final String DISPATCHER_FURN_UPDATE = "/views/manage/furn_update.jsp";
     private static final String DISPATCHER_SHOW_FURN = "/manage/furn?action=showFurn";
     private IFurnService mFurnService = new FurnServiceImpl();
 
@@ -160,6 +161,61 @@ public class FurnServlet extends BaseServlet {
         }
         Logit.d(TAG, "delete success");
         // 删除成功，重定向到 DISPATCHER_SHOW_FURN 界面
+        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+    }
+
+    /**
+     * 根据 id 查询家居信息
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void queryFurnById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "queryFurnById...");
+        String furnId = req.getParameter("furnId");
+        Integer integerFurnId = StringToNumUtils.parseInteger(furnId);
+        Logit.d(TAG, "integerFurnId: " + integerFurnId);
+        if (integerFurnId < 0) {
+            Logit.d(TAG, "integerFurnId is error");
+            req.getRequestDispatcher(DISPATCHER_FURN_MANAGE).forward(req, resp);
+            return;
+        }
+        Furn furn = mFurnService.queryFurnById(integerFurnId);
+        if (furn == null) {
+            // 未查询到家居信息
+            Logit.d(TAG, "not find furn info");
+            req.getRequestDispatcher(DISPATCHER_FURN_MANAGE).forward(req, resp);
+            return;
+        }
+        Logit.d(TAG, "查询到家居信息");
+        req.setAttribute("furn", furn);
+        // 转发页面到 DISPATCHER_SHOW_FURN 界面
+        req.getRequestDispatcher(DISPATCHER_FURN_UPDATE).forward(req, resp);
+    }
+
+    /**
+     * 更新家居信息
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void updateFurn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "updateFurn...");
+        // =============使用 BeanUtils 方式对 Furn 进行封装===========
+        Furn furn = new Furn();
+        DataUtils.convertParamsToBean(furn, req.getParameterMap());
+        // =============使用 BeanUtils 方式对 Furn 进行封装===========
+        Logit.d(TAG, "furn: " + furn);
+        boolean isUpdateSuccess = mFurnService.updateFurn(furn);
+        if (!isUpdateSuccess) {
+            Logit.d(TAG, "update furn data error");
+            req.getRequestDispatcher(DISPATCHER_FURN_UPDATE).forward(req, resp);
+            return;
+        }
+        Logit.d(TAG, "update furn data success");
+        // 更新数据成功，重定向到 DISPATCHER_SHOW_FURN 界面
         resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
     }
 }

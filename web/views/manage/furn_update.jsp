@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge"/>
-    <base href="<%=request.getContextPath() + "/"%>">
     <title>荒天帝-家居网购</title>
+    <base href="<%=request.getContextPath() + "/"%>">
     <!-- 移动端适配 -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
@@ -13,7 +13,7 @@
     <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         $(function () {
-            $("#add_btn").click(function () {
+            $("#update_btn").click(function () {
                 // 1.验证价格是否有两位小数的正实数
                 var $price = $("#price");
                 var priceReq = /^[0-9]+(.[0-9]{2})?$/;
@@ -98,14 +98,12 @@
 </div>
 <!-- Cart Area Start -->
 <div class="cart-main-area pt-100px pb-100px">
-    <span class="errorMsg"
-          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" >${requestScope.errorMsg}</span>
     <div class="container">
-        <h3 class="cart-page-title">家居后台管理-添加家居</h3>
+        <h3 class="cart-page-title">家居后台管理-修改家居</h3>
+        <span class="errorMsg"
+              style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" ></span>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <form action="manage/furn" method="post">
-                    <input type="hidden" name="action" value="addFurn">
                     <div class="table-content table-responsive cart-table-content">
                         <table>
                             <thead>
@@ -121,29 +119,44 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <td class="product-thumbnail">
-                                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/default.jpg"
-                                                     alt=""/></a>
-                                </td>
-                                <td class="product-name"><input name="name" style="width: 60%" type="text" value="Name"/></td>
-                                <td class="product-name"><input name="maker" style="width: 90%" type="text" value="蚂蚁家居"/></td>
-                                <td class="product-price-cart"><input name="price" id="price" style="width: 90%" type="text" value="60.00"/></td>
-                                <td class="product-quantity">
-                                    <input name="sales" style="width: 90%" type="text" id="sales" value="100"/>
-                                </td>
-                                <td class="product-quantity">
-                                    <input name="stock" style="width: 90%" type="text" id="stock" value="80"/>
-                                </td>
-                                <td>
-<!--                                    <a href="#"><i class="icon-pencil"></i></a>-->
-<!--                                    <a href="#"><i class="icon-close"></i></a>-->
-                                    <input type="submit" id="add_btn" style="width: 90%;background-color: silver;border: silver;border-radius: 20%;" value="添加家居"/>
-                                </td>
+                                <form action="manage/furn" method="post">
+                                    <input type="hidden" name="action" value="updateFurn">
+                                    <input type="hidden" name="id" value="${requestScope.furn.id}">
+                                    <input type="hidden" name="imgUrl" value="${requestScope.furn.imgUrl}">
+                                    <td class="product-thumbnail">
+                                        <div id="pic">
+                                            <img id="prevView" class="img-responsive ml-3"
+                                                 src="${requestScope.furn.imgUrl}"
+                                                 alt=""/>
+                                            <input type="file" name="imgPath" id="" value="" onchange="prev(this)"/>
+                                        </div>
+                                    </td>
+                                    <td class="product-name"><input name="name" style="width: 60%" type="text"
+                                                                    value="${requestScope.furn.name}"/></td>
+                                    <td class="product-name"><input name="maker" style="width: 90%" type="text"
+                                                                    value="${requestScope.furn.maker}"/></td>
+                                    <td class="product-price-cart"><input name="price" style="width: 90%" type="text" id="price"
+                                                                          value="${requestScope.furn.price}"/></td>
+                                    <td class="product-quantity">
+                                        <input name="sales" style="width: 90%" type="text" id="sales"
+                                               value="${requestScope.furn.sales}"/>
+                                    </td>
+                                    <td class="product-quantity">
+                                        <input name="stock" style="width: 90%" type="text" id="stock"
+                                               value="${requestScope.furn.stock}"/>
+                                    </td>
+                                    <td>
+                                        <!--<a href="#"><i class="icon-pencil"></i></a>-->
+                                        <!--<a href="#"><i class="icon-close"></i></a>-->
+                                        <input type="submit"
+                                               style="width: 90%;background-color: silver;border: silver;border-radius: 20%;"
+                                               value="修改家居" id="update_btn"/>
+                                    </td>
+                                </form>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                </form>
             </div>
         </div>
     </div>
