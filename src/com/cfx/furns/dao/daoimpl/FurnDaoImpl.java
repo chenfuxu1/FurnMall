@@ -75,4 +75,32 @@ public class FurnDaoImpl extends BasicDao<Furn> implements IFurnDao {
         int update = update(sql, furn.getName(), furn.getMaker(), furn.getPrice(), furn.getSales(), furn.getStock(), furn.getImgUrl(), furn.getId());
         return update > 0;
     }
+
+    // 查询数据库中总数据个数
+    @Override
+    public int queryTotalDataSize() {
+        String sql = "select count(*) from " + TABLE_FURN;
+        // return (Integer) queryScalar(sql); 直接这样转换会报异常，因为查出来的是 Long 型，不能直接转化
+        return ((Number) queryScalar(sql)).intValue();
+    }
+
+    /**
+     * 获取一页展示个家居数据集合
+     * @param beginNum 开始从哪条数据开始取数，数据库第一条从 0 开始计数
+     * @param pageSize 共取多少条数据
+     * @return
+     */
+    @Override
+    public List<Furn> getPageFurns(int beginNum, int pageSize) {
+        if (beginNum < 0) {
+            Logit.d(TAG, "beginNum is less than zero");
+            return null;
+        }
+        if (pageSize <= 0) {
+            Logit.d(TAG, "pageSize is error");
+            return null;
+        }
+        String sql = "select id, `name`, maker, price, sales, stock, img_url imgUrl from " + TABLE_FURN + " limit ?, ?;";
+        return queryMulti(sql, Furn.class, beginNum, pageSize);
+    }
 }

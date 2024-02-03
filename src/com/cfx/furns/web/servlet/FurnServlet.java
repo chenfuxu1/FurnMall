@@ -1,8 +1,10 @@
 package com.cfx.furns.web.servlet;
 
 import com.cfx.furns.entity.Furn;
+import com.cfx.furns.entity.Page;
 import com.cfx.furns.service.IFurnService;
 import com.cfx.furns.service.serviceimpl.FurnServiceImpl;
+import com.cfx.furns.utils.Constants;
 import com.cfx.furns.utils.DataUtils;
 import com.cfx.furns.utils.Logit;
 import com.cfx.furns.utils.StringToNumUtils;
@@ -217,5 +219,26 @@ public class FurnServlet extends BaseServlet {
         Logit.d(TAG, "update furn data success");
         // 更新数据成功，重定向到 DISPATCHER_SHOW_FURN 界面
         resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+    }
+
+    /**
+     * 根据请求的分页展示分页数据
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void page(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "page...");
+        // 获取当前页数
+        String pageNo = req.getParameter("pageNo");
+        // 获取每页展示的个数
+        String pageSize = req.getParameter("pageSize");
+        int pageNoInt = StringToNumUtils.parseInt(pageNo, 1);
+        int pageSizeInt = StringToNumUtils.parseInt(pageSize, Constants.PAGE_SIZE);
+        Logit.d(TAG, "pageNoInt: " + pageNoInt + " pageSizeInt: " + pageSizeInt);
+        Page<Furn> page = mFurnService.page(pageNoInt, pageSizeInt);
+        req.setAttribute("page", page);
+        req.getRequestDispatcher(DISPATCHER_FURN_MANAGE).forward(req, resp);
     }
 }

@@ -35,7 +35,9 @@
                     <div class="header-actions">
                         <!-- Single Wedge Start -->
                         <div class="header-bottom-set dropdown">
-                            <a href="manage/furn?action=showFurn">家居管理</a>
+                            <%--<a href="manage/furn?action=showFurn">家居管理</a>--%>
+                            <%--现在需要分页进行展示 pageNo 表示展示第一页--%>
+                            <a href="manage/furn?action=page&pageNo=1">家居管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
                             <a href="views/manage/manager.html">订单管理</a>

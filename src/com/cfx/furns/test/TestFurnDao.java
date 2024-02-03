@@ -24,4 +24,18 @@ public class TestFurnDao {
             Logit.d(TAG, furn.toString());
         }
     }
+
+    @Test
+    public void getTotalCount() {
+        IFurnDao furnDao = new FurnDaoImpl();
+        int i = furnDao.queryTotalDataSize();
+        System.out.println(i);
+    }
+
+    @Test
+    public void getPageFurns() {
+        IFurnDao furnDao = new FurnDaoImpl();
+        List<Furn> pageFurns = furnDao.getPageFurns(3, 3);
+        Logit.d(TAG, "pageFurns: " + pageFurns);
+    }
 }

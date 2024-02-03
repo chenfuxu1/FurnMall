@@ -121,7 +121,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${furns}" var="furn">
+                            <c:forEach items="${requestScope.page.itemList}" var="furn">
                                 <tr>
                                     <td class="product_img">
                                         <a href="#"><img class="img-responsive ml-3" src="${furn.imgUrl}" alt="" height="200px"/></a>

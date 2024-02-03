@@ -26,4 +26,10 @@ public interface IFurnDao {
 
     // 更新某条家居信息
     public boolean updateFurn(Furn furn);
+
+    // 查询总数据个数
+    public int queryTotalDataSize();
+
+    // 获取一页展示的家居数据
+    public List<Furn> getPageFurns(int beginNum, int pageSize);
 }

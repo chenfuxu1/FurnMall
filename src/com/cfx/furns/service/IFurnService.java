@@ -1,6 +1,7 @@
 package com.cfx.furns.service;
 
 import com.cfx.furns.entity.Furn;
+import com.cfx.furns.entity.Page;
 
 import java.util.List;
 
@@ -26,4 +27,12 @@ public interface IFurnService {
 
     // 更新某条家居信息
     public boolean updateFurn(Furn furn);
+
+    /**
+     * 根据传入的 pageNo 和 pageSize 返回对应的 page 对象
+     * @param pageNo 表示当前是第几页
+     * @param pageSize
+     * @return
+     */
+    public Page<Furn> page(int pageNo, int pageSize);
 }

@@ -1,6 +1,7 @@
 package com.cfx.furns.test;
 
 import com.cfx.furns.entity.Furn;
+import com.cfx.furns.entity.Page;
 import com.cfx.furns.service.IFurnService;
 import com.cfx.furns.service.serviceimpl.FurnServiceImpl;
 import com.cfx.furns.utils.Logit;
@@ -29,5 +30,11 @@ public class TestFurnService {
     public void queryFurnById() {
         Furn furn = mFurnService.queryFurnById(1);
         Logit.d(TAG, "furn: " + furn);
+    }
+
+    @Test
+    public void page() {
+        Page<Furn> page = mFurnService.page(2, 2);
+        System.out.println(page);
     }
 }
