@@ -28,6 +28,7 @@ public class FurnServlet extends BaseServlet {
     private static final String DISPATCHER_FURN_ADD = "/views/manage/furn_add.jsp";
     private static final String DISPATCHER_FURN_UPDATE = "/views/manage/furn_update.jsp";
     private static final String DISPATCHER_SHOW_FURN = "/manage/furn?action=showFurn";
+    private static final String DISPATCHER_SHOW_PAGE = "/manage/furn?action=page";
     private IFurnService mFurnService = new FurnServiceImpl();
 
     /**
@@ -134,7 +135,10 @@ public class FurnServlet extends BaseServlet {
         /**
          * 方式 3：重定向
          */
-        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+        // resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+
+        // 重定向到 /manage/furn?action=page 原有页面进行分页显示
+        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_PAGE + "&pageNo=" + req.getParameter("pageNo"));
     }
 
     /**
@@ -163,7 +167,9 @@ public class FurnServlet extends BaseServlet {
         }
         Logit.d(TAG, "delete success");
         // 删除成功，重定向到 DISPATCHER_SHOW_FURN 界面
-        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+        // resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+
+        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_PAGE + "&pageNo=" + req.getParameter("pageNo"));
     }
 
     /**
@@ -193,6 +199,7 @@ public class FurnServlet extends BaseServlet {
         Logit.d(TAG, "查询到家居信息");
         req.setAttribute("furn", furn);
         // 转发页面到 DISPATCHER_SHOW_FURN 界面
+        // 如果请求带来的参数 pageNo，转发到下一个界面，在下个界面可以通过 param.pageNo 获取到
         req.getRequestDispatcher(DISPATCHER_FURN_UPDATE).forward(req, resp);
     }
 
@@ -218,7 +225,10 @@ public class FurnServlet extends BaseServlet {
         }
         Logit.d(TAG, "update furn data success");
         // 更新数据成功，重定向到 DISPATCHER_SHOW_FURN 界面
-        resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+        // resp.sendRedirect(getServletContext().getContextPath() + DISPATCHER_SHOW_FURN);
+
+        // 这个时候需要考虑分页情况，修改了某一页的数据后，更新之后再回到该页，中间过程中需要传输 pageNo，否则不知道之前修改的是哪一页
+        page(req, resp);
     }
 
     /**

@@ -73,7 +73,7 @@
                             <a href="#">后台管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="views/manage/furn_add.jsp">添加家居</a>
+                            <a href="views/manage/furn_add.jsp?pageNo=${requestScope.page.currentPageNo}">添加家居</a>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,8 @@
                             <c:forEach items="${requestScope.page.itemList}" var="furn">
                                 <tr>
                                     <td class="product_img">
-                                        <a href="#"><img class="img-responsive ml-3" src="${furn.imgUrl}" alt="" height="200px"/></a>
+                                        <a href="#"><img class="img-responsive ml-3" src="${furn.imgUrl}" alt=""
+                                                         height="200px"/></a>
                                     </td>
                                     <td class="product_name"><a href="#">${furn.name}</a></td>
                                     <td class="product_maker_name"><a href="#">${furn.maker}</a></td>
@@ -132,8 +133,11 @@
                                     <td class="product_sales">${furn.sales}</td>
                                     <td class="product_stock">${furn.stock}</td>
                                     <td class="product-remove">
-                                        <a href="manage/furn?action=queryFurnById&furnId=${furn.id}"><i class="icon-pencil"></i></a>
-                                        <a class="delete_class" href="manage/furn?action=deleteFurn&furnId=${furn.id}"><i class="icon-close"></i></a>
+                                        <a href="manage/furn?action=queryFurnById&furnId=${furn.id}&pageNo=${requestScope.page.currentPageNo}"><i
+                                                class="icon-pencil"></i></a>
+                                        <a class="delete_class"
+                                           href="manage/furn?action=deleteFurn&furnId=${furn.id}&pageNo=${requestScope.page.currentPageNo}"><i
+                                                class="icon-close"></i></a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -143,6 +147,37 @@
                 </form>
             </div>
         </div>
+        <%--导航条开始位置--%>
+        <div class="pro-pagination-style text-center mb-md-30px mb-lm-30px mt-6" data-aos="fade-up">
+            <ul>
+                <%--如果当前页大于 1，才显示上一页--%>
+                <c:if test="${requestScope.page.currentPageNo > 1}">
+                    <li><a href="manage/furn?action=page&pageNo=${requestScope.page.currentPageNo - 1}">上页</a></li>
+                </c:if>
+
+                <%--requestScope.page.totalPageCount 表示总页数，从 1 到总页数循环展示--%>
+                <%--这样展示所有页数，如果页数过多会显示不下，后续优化导航条最多展示个数--%>
+                <c:forEach begin="1" end="${requestScope.page.totalPageCount}" var="index">
+                    <c:choose>
+                        <%--如果是当前选中的页数，需要设置 class="active" 属性--%>
+                        <c:when test="${requestScope.page.currentPageNo == index}">
+                            <li><a class="active" href="manage/furn?action=page&pageNo=${index}">${index}</a></li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="manage/furn?action=page&pageNo=${index}">${index}</a></li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <%--如果当前页小于总页数，才显示下页--%>
+                <c:if test="${requestScope.page.currentPageNo < requestScope.page.totalPageCount}">
+                    <li><a href="manage/furn?action=page&pageNo=${requestScope.page.currentPageNo + 1}">下页</a></li>
+                </c:if>
+
+                <li><a href="#">共 ${requestScope.page.currentPageNo} / ${requestScope.page.totalPageCount} 页</a></li>
+            </ul>
+        </div>
+        <%--导航条结束位置--%>
     </div>
 </div>
 <!-- Cart Area End -->

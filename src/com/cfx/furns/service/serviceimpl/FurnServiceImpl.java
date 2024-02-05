@@ -87,6 +87,11 @@ public class FurnServiceImpl implements IFurnService {
         totalPageCount = Math.ceil(totalPageCount);
         // 4.设置总页数
         page.setTotalPageCount((int) totalPageCount);
+        // 如果当前页数大于总页数，设置当前页数为总页数
+        if (pageNo > totalPageCount) {
+            pageNo = (int) totalPageCount;
+            page.setCurrentPageNo(pageNo);
+        }
         int beginNum = (pageNo - 1) * pageSize; // 计算出当前页开始的数据编号
         List<Furn> pageFurns = mFurnDao.getPageFurns(beginNum, pageSize);
         // 5.设置当前页展示的数据集合

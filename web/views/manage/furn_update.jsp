@@ -123,6 +123,9 @@
                                     <input type="hidden" name="action" value="updateFurn">
                                     <input type="hidden" name="id" value="${requestScope.furn.id}">
                                     <input type="hidden" name="imgUrl" value="${requestScope.furn.imgUrl}">
+                                    <%--通过 param.pageNo 获取上个页面发送过来的 pageNo 对象--%>
+                                    <%--需要将 pageNo 传到 updateFurn 方法去--%>
+                                    <input type="hidden" name="pageNo" value="${param.pageNo}">
                                     <td class="product-thumbnail">
                                         <div id="pic">
                                             <img id="prevView" class="img-responsive ml-3"
