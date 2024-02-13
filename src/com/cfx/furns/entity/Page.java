@@ -78,4 +78,16 @@ public class Page<T> {
     public void setPageUrl(String pageUrl) {
         mPageUrl = pageUrl;
     }
+
+    @Override
+    public String toString() {
+        return "Page{" +
+                "mCurrentPageNo=" + mCurrentPageNo +
+                ", mPageSize=" + mPageSize +
+                ", mTotalDataCount=" + mTotalDataCount +
+                ", mTotalPageCount=" + mTotalPageCount +
+                ", mItemList=" + mItemList +
+                ", mPageUrl='" + mPageUrl + '\'' +
+                '}';
+    }
 }

@@ -54,4 +54,15 @@
         <!--这样设计方便后续过滤器直接过滤 manage 下的文件需要登录才能访问-->
         <url-pattern>/manage/furn</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CustomerFurnServlet</servlet-name>
+        <servlet-class>com.cfx.furns.web.servlet.CustomerFurnServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CustomerFurnServlet</servlet-name>
+        <!--这样设计方便后续过滤器直接过滤 manage 下的文件需要登录才能访问-->
+        <url-pattern>/customerFurn</url-pattern>
+    </servlet-mapping>
 </web-app>

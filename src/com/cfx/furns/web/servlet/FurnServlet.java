@@ -20,7 +20,7 @@ import java.util.List;
  * Create By: Chen.F.X
  * DateTime: 2024/1/27 15:37
  *
- * 处理家居的 servlet
+ * 后台管理处理家居的 servlet
  **/
 public class FurnServlet extends BaseServlet {
     private static final String TAG = "FurnServlet";

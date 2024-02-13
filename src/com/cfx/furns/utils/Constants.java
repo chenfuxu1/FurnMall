@@ -11,5 +11,5 @@ public class Constants {
     public static final String TABLE_FURN = "furn"; // 家居表
     public static final String DEFAULT_IMG_URL = "assets/images/product-image/default.jpg";
 
-    public static final int PAGE_SIZE = 3; // 每页显示的数据大小
+    public static final int PAGE_SIZE = 4; // 每页显示的数据大小
 }
