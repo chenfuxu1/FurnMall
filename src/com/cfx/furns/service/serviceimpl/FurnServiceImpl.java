@@ -99,4 +99,50 @@ public class FurnServiceImpl implements IFurnService {
         // 6.设置分页导航的 url todo
         return page;
     }
+
+    @Override
+    public Page<Furn> pageByKeyword(String keyword, int pageNo, int pageSize) {
+        if (keyword == null || "".equals(keyword)) {
+            return page(pageNo, pageSize);
+        }
+        if (pageNo < 0) {
+            Logit.d(TAG, "pageNo is less than zero");
+            return null;
+        }
+        if (pageSize <= 0) {
+            Logit.d(TAG, "pageSize is error");
+            return null;
+        }
+        int keywordDataSize = mFurnDao.queryKeywordDataSize(keyword);
+        // 1.如果没有搜索结果，直接返回空
+        if (keywordDataSize <= 0) {
+            Logit.d(TAG, "keywordDataSize is error");
+            return null;
+        }
+        Page<Furn> page = new Page<>();
+        // 2.设置当前显示页数
+        page.setCurrentPageNo(pageNo);
+        // 3.设置每页展示多少条数据
+        page.setPageSize(pageSize);
+
+        // 4.设置总数据数
+        page.setTotalDataCount(keywordDataSize);
+        double totalPageCount = keywordDataSize / (double) pageSize;
+        totalPageCount = Math.ceil(totalPageCount);
+        // 5.设置总页数
+        page.setTotalPageCount((int) totalPageCount);
+        Logit.d(TAG, "cfx pageNo: " + pageNo + " pageSize: " + pageSize + " totalPageCount: " + totalPageCount);
+        // 6.如果当前页数大于总页数，设置当前页数为总页数
+        if (pageNo > totalPageCount) {
+            pageNo = (int) totalPageCount;
+            page.setCurrentPageNo(pageNo);
+        }
+
+        int beginNum = (pageNo - 1) * pageSize; // 计算出当前页开始的数据编号
+        List<Furn> pageFurns = mFurnDao.getPageFurnsByKeyword(keyword, beginNum, pageSize);
+        // 7.设置当前页展示的数据集合
+        page.setItemList(pageFurns);
+        // 8.设置分页导航的 url todo
+        return page;
+    }
 }

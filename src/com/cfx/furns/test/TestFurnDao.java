@@ -38,4 +38,18 @@ public class TestFurnDao {
         List<Furn> pageFurns = furnDao.getPageFurns(3, 3);
         Logit.d(TAG, "pageFurns: " + pageFurns);
     }
+
+    @Test
+    public void getPageFurnsByKeyword() {
+        IFurnDao furnDao = new FurnDaoImpl();
+        List<Furn> pageFurns = furnDao.getPageFurnsByKeyword("风格",4, 4);
+        Logit.d(TAG, "pageFurns: " + pageFurns);
+    }
+
+    @Test
+    public void queryKeywordDataSize() {
+        IFurnDao furnDao = new FurnDaoImpl();
+        int i = furnDao.queryKeywordDataSize("风格");
+        System.out.println(i);
+    }
 }

@@ -35,4 +35,13 @@ public interface IFurnService {
      * @return
      */
     public Page<Furn> page(int pageNo, int pageSize);
+
+    /**
+     * 根据传入的 pageNo 和 pageSize 以及搜索关键词返回对应的 page 对象
+     * @param keyword 搜索关键词
+     * @param pageNo 表示当前是第几页
+     * @param pageSize 每页展示的数量
+     * @return 返回 page 对象
+     */
+    public Page<Furn> pageByKeyword(String keyword, int pageNo, int pageSize);
 }

@@ -39,8 +39,9 @@
                             <a href="javascript:void(0)" class="header-action-btn search-btn"><i
                                     class="icon-magnifier"></i></a>
                             <div class="dropdown_search">
-                                <form class="action-form" action="#">
-                                    <input class="form-control" placeholder="Enter your search key" type="text">
+                                <form class="action-form" action="customerFurn" method="post">
+                                    <input type="hidden" name="action" value="pageByKeyword">
+                                    <input class="form-control" placeholder="Enter your search key" type="text" name="keyword" value="${requestScope.keyword}">
                                     <button class="submit" type="submit"><i class="icon-magnifier"></i></button>
                                 </form>
                             </div>
@@ -162,7 +163,7 @@
     <ul>
         <%--如果当前页大于 1，才显示上一页--%>
         <c:if test="${requestScope.page.currentPageNo > 1}">
-            <li><a href="customerFurn?action=showIndex&pageNo=${requestScope.page.currentPageNo - 1}">上页</a></li>
+            <li><a href="customerFurn?action=${requestScope.action}&pageNo=${requestScope.page.currentPageNo - 1}&keyword=${requestScope.keyword}">上页</a></li>
         </c:if>
 
         <%--requestScope.page.totalPageCount 表示总页数，从 1 到总页数循环展示--%>
@@ -171,17 +172,17 @@
             <c:choose>
                 <%--如果是当前选中的页数，需要设置 class="active" 属性--%>
                 <c:when test="${requestScope.page.currentPageNo == index}">
-                    <li><a class="active" href="customerFurn?action=showIndex&pageNo=${index}">${index}</a></li>
+                    <li><a class="active" href="customerFurn?action=${requestScope.action}&pageNo=${index}&keyword=${requestScope.keyword}">${index}</a></li>
                 </c:when>
                 <c:otherwise>
-                    <li><a href="customerFurn?action=showIndex&pageNo=${index}">${index}</a></li>
+                    <li><a href="customerFurn?action=${requestScope.action}&pageNo=${index}&keyword=${requestScope.keyword}">${index}</a></li>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
 
         <%--如果当前页小于总页数，才显示下页--%>
         <c:if test="${requestScope.page.currentPageNo < requestScope.page.totalPageCount}">
-            <li><a href="customerFurn?action=showIndex&pageNo=${requestScope.page.currentPageNo + 1}">下页</a></li>
+            <li><a href="customerFurn?action=${requestScope.action}&pageNo=${requestScope.page.currentPageNo + 1}&keyword=${requestScope.keyword}">下页</a></li>
         </c:if>
 
         <li><a href="#">共 ${requestScope.page.currentPageNo} / ${requestScope.page.totalPageCount} 页</a></li>

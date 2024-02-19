@@ -32,4 +32,10 @@ public interface IFurnDao {
 
     // 获取一页展示的家居数据
     public List<Furn> getPageFurns(int beginNum, int pageSize);
+
+    // 根据搜搜关键词获取一页展示的家居数据
+    public List<Furn> getPageFurnsByKeyword(String keyword, int beginNum, int pageSize);
+
+    // 搜索关键词的查询数据个数
+    public int queryKeywordDataSize(String keyword);
 }

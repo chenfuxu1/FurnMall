@@ -94,7 +94,7 @@ public class Furn {
 
     @Override
     public String toString() {
-        return "Furn{" +
+        return "\r\nFurn{" +
                 "mId=" + mId +
                 ", mName='" + mName + '\'' +
                 ", mMaker='" + mMaker + '\'' +
