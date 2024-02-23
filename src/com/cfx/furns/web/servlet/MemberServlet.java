@@ -26,6 +26,7 @@ public class MemberServlet extends BaseServlet {
     private static final String ACTION_REGISTER = "register"; // 注册的表单
     private static final String DISPATCHER_LOGIN_SUCCESS = "/views/member/login_success.jsp";
     private static final String DISPATCHER_LOGIN_FAILED = "/views/member/login.jsp";
+    private static final String DISPATCHER_INDEX = "/index.jsp";
     private static final String DISPATCHER_REGISTER_SUCCESS = "/views/member/register_success.html";
     private static final String DISPATCHER_REGISTER_FAIL = "/views/member/register_fail.html";
     private IMemberService mMemberService = new MemberServiceImpl();
@@ -60,10 +61,29 @@ public class MemberServlet extends BaseServlet {
 
         HttpSession session = req.getSession();
         session.setAttribute("user_name", mUserName);
-        session.setMaxInactiveInterval(10);
+        session.setMaxInactiveInterval(20);
 
         req.getRequestDispatcher(DISPATCHER_LOGIN_SUCCESS).forward(req, resp);
     }
+
+    /**
+     * 处理退出登录逻辑
+     *
+     * 只需将 session 销毁即可
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "logout...");
+        // 1.销毁 session
+        HttpSession session = req.getSession();
+        session.invalidate();
+        // 2.转发页面到 index.jsp
+        req.getRequestDispatcher(DISPATCHER_INDEX).forward(req, resp);
+    }
+
 
     /**
      * 处理注册的请求
