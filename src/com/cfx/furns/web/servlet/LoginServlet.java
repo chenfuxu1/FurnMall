@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -20,7 +21,7 @@ import java.io.IOException;
  **/
 public class LoginServlet extends HttpServlet {
     private static final String TAG = "LoginServlet";
-    private static final String DISPATCHER_LOGIN_SUCCESS = "/views/member/login_success.html";
+    private static final String DISPATCHER_LOGIN_SUCCESS = "/views/member/login_success.jsp";
     private static final String DISPATCHER_LOGIN_FAILED = "/views/member/login.jsp";
     private ILoginService mLoginService = new LoginServiceImpl();
 
@@ -45,6 +46,12 @@ public class LoginServlet extends HttpServlet {
         }
         // 登录成功，转发到成功界面
         Logit.d(TAG, "登录成功！");
+
+        HttpSession session = req.getSession();
+        session.setAttribute("user_name", userName);
+        session.setMaxInactiveInterval(50);
+        Logit.d(TAG, "cfx session.getId(): " + session.getId());
+
         req.getRequestDispatcher(DISPATCHER_LOGIN_SUCCESS).forward(req, resp);
     }
 

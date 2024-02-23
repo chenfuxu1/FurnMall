@@ -27,7 +27,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="index.html"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
+                        <a href="index.jsp"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -46,13 +46,27 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- Single Wedge Start -->
-                        <div class="header-bottom-set dropdown">
-                            <a href="views/member/login.jsp">登录|注册</a>
-                        </div>
-                        <div class="header-bottom-set dropdown">
-                            <a href="#">后台管理</a>
-                        </div>
+
+                        <%--如果 session 中用户名为空，表示未登陆过--%>
+                        <c:if test="${empty sessionScope.user_name}">
+                            <div class="header-bottom-set dropdown">
+                                <a href="views/member/login.jsp">登录|注册</a>
+                            </div>
+                        </c:if>
+
+                        <%--如果 session 中用户名不为空，表示登陆过--%>
+                        <c:if test="${not empty sessionScope.user_name}">
+                            <div class="header-bottom-set dropdown">
+                                <a >欢迎 ${sessionScope.user_name}</a>
+                            </div>
+                            <div class="header-bottom-set dropdown">
+                                <a href="#">订单管理</a>
+                            </div>
+                            <div class="header-bottom-set dropdown">
+                                <a href="#">安全退出</a>
+                            </div>
+                        </c:if>
+
                         <!-- Single Wedge End -->
                         <a href="#offcanvas-cart"
                            class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">

@@ -10,6 +10,7 @@ import com.cfx.furns.utils.Logit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -23,7 +24,7 @@ public class MemberServlet extends BaseServlet {
     private static final String TAG = "MemberServlet";
     private static final String ACTION_LOGIN = "login"; // 登录的表单
     private static final String ACTION_REGISTER = "register"; // 注册的表单
-    private static final String DISPATCHER_LOGIN_SUCCESS = "/views/member/login_success.html";
+    private static final String DISPATCHER_LOGIN_SUCCESS = "/views/member/login_success.jsp";
     private static final String DISPATCHER_LOGIN_FAILED = "/views/member/login.jsp";
     private static final String DISPATCHER_REGISTER_SUCCESS = "/views/member/register_success.html";
     private static final String DISPATCHER_REGISTER_FAIL = "/views/member/register_fail.html";
@@ -56,6 +57,11 @@ public class MemberServlet extends BaseServlet {
         }
         // 登录成功，转发到成功界面
         Logit.d(TAG, "登录成功！");
+
+        HttpSession session = req.getSession();
+        session.setAttribute("user_name", mUserName);
+        session.setMaxInactiveInterval(10);
+
         req.getRequestDispatcher(DISPATCHER_LOGIN_SUCCESS).forward(req, resp);
     }
 
