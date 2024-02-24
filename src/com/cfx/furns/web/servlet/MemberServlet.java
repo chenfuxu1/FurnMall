@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
+
 /**
  * Project: FurnMall
  * Create By: Chen.F.X
@@ -96,11 +98,33 @@ public class MemberServlet extends BaseServlet {
         mUserName = req.getParameter("username");
         mPassword = req.getParameter("password");
         String email = req.getParameter("email");
-        Logit.d(TAG, "userName: " + mUserName + " password: " + mPassword + " email: " + email);
+        // 1.获取用户提交的验证码
+        String code = req.getParameter("code");
+        // 2.从 session 中获取缓存的验证码进行比对
+        HttpSession session = req.getSession();
+        String token = (String) session.getAttribute(KAPTCHA_SESSION_KEY);
+        // 3.立即删除 session 缓存的验证码，防止该验证码被重复使用
+        session.removeAttribute(KAPTCHA_SESSION_KEY);
+        Logit.d(TAG, "userName: " + mUserName + " password: " + mPassword + " email: " + email + " code: " + code);
+        if (token == null || !token.equalsIgnoreCase(code)) {
+            // 验证失败，直接俄返回验证码不正确
+            Logit.d(TAG, "验证码错误");
+            req.setAttribute("register_error_msg", "验证码错误！");
+            req.setAttribute("register_email", email);
+            req.setAttribute("register_user_name", mUserName);
+            req.setAttribute("active", "register");
+            req.getRequestDispatcher(DISPATCHER_LOGIN_FAILED).forward(req, resp);
+            return;
+        }
         boolean existUserName = mMemberService.isExistUserName(mUserName);
         if (existUserName) {
             // 用户名存在，返回注册失败界面
-            req.getRequestDispatcher(DISPATCHER_REGISTER_FAIL).forward(req, resp);
+            Logit.d(TAG, "用户名已注册过");
+            req.setAttribute("register_error_msg", "用户名已注册过！");
+            req.setAttribute("register_email", email);
+            req.setAttribute("register_user_name", mUserName);
+            req.setAttribute("active", "register");
+            req.getRequestDispatcher(DISPATCHER_LOGIN_FAILED).forward(req, resp);
             return;
         }
         // 用户名不存在，开始注册用户
@@ -108,7 +132,7 @@ public class MemberServlet extends BaseServlet {
         boolean result = mMemberService.registerMember(member);
         if (!result) {
             // 注册失败，返回失败界面
-            req.getRequestDispatcher(DISPATCHER_REGISTER_FAIL).forward(req, resp);
+            req.getRequestDispatcher(DISPATCHER_LOGIN_FAILED).forward(req, resp);
             return;
         }
         // 注册成功，返回成功界面

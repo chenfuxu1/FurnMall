@@ -4,12 +4,16 @@ import com.cfx.furns.entity.Member;
 import com.cfx.furns.service.IMemberService;
 import com.cfx.furns.service.serviceimpl.MemberServiceImpl;
 import com.cfx.furns.utils.Logit;
+import com.google.code.kaptcha.servlet.KaptchaServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
 /**
  * Project: FurnMall

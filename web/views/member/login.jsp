@@ -16,6 +16,11 @@
     <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
         $(function () {
+            // 如果是注册失败，返回到注册 tab，这里强行设置点击一下
+            if ("register" == "${requestScope.active}") {
+                $("#register_tab")[0].click() // 模拟点击
+            }
+
             var $sub_btn = $("#sub-btn");
             $sub_btn.click(function () {
                 // 1.验证用户名：必须字母，数字下划线组成，并且长度为 6 到 10 位
@@ -48,6 +53,15 @@
                     $("span.errorMsg").text("邮箱格式不正确！");
                     return false;
                 }
+
+                // 5.验证验证码不能为空
+                var codeText = $("#code").val()
+                codeText = $.trim(codeText)
+                if (codeText == null || "" == codeText) {
+                    $("span.errorMsg").text("验证码为空！");
+                    return false;
+                }
+
                 // 验证成功
                 return true;
 
@@ -72,6 +86,15 @@
                     return false;
                 }
                 return true;
+            })
+
+            // 增加验证码点击事件，点击切换验证码
+            $("#codeImg").click(function () {
+                /**
+                 * 点击图片时，改变图片的 src
+                 * 为了防止 src 一致，图片有缓存机制，不会去请求，可以在后边拼接时间
+                 */
+                this.src = <%=request.getContextPath() + "/"%> +"kaptcha?date=" + new Date();
             })
         })
     </script>
@@ -135,7 +158,7 @@
                         <a class="active" data-bs-toggle="tab" href="#lg1">
                             <h4>会员登录</h4>
                         </a>
-                        <a data-bs-toggle="tab" href="#lg2">
+                        <a id="register_tab" data-bs-toggle="tab" href="#lg2">
                             <h4>会员注册</h4>
                         </a>
                     </div>
@@ -144,12 +167,14 @@
                             <div class="login-form-container">
                                 <div class="login-register-form">
                                     <span class="login_error_msg"
-                                          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" >${login_error_msg}</span>
+                                          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;">${login_error_msg}</span>
                                     <form action="member" method="post">
                                         <%--隐藏域，表明是登录的表单--%>
                                         <input type="hidden" name="action" value="login">
-                                        <input type="text" name="login_user_name" id="login_user_name" placeholder="Username" value="${login_user_name}"/>
-                                        <input type="password" name="login_password" id="login_password" placeholder="Password"/>
+                                        <input type="text" name="login_user_name" id="login_user_name"
+                                               placeholder="Username" value="${login_user_name}"/>
+                                        <input type="password" name="login_password" id="login_password"
+                                               placeholder="Password"/>
                                         <div class="button-box">
                                             <div class="login-toggle-btn">
                                                 <input type="checkbox"/>
@@ -167,18 +192,18 @@
                                 <div class="login-register-form">
                                     <!--设置 div 中的 span 居中显示-->
                                     <!--justify-content: center; display: flex;-->
-                                    <span class="errorMsg"
-                                          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;" ></span>
+                                    <span class="register_error_msg"
+                                          style="font-weight: bold; font-size: 20pt; justify-content: center; display: flex; color: red;">${requestScope.register_error_msg}</span>
                                     <!--注册表单-->
                                     <form action="member" method="post">
                                         <%--隐藏域，表明是注册的表单--%>
                                         <input type="hidden" name="action" value="register">
-                                        <input type="text" id="username" name="username" placeholder="Username" />
+                                        <input type="text" id="username" name="username" placeholder="Username" value="${requestScope.register_user_name}"/>
                                         <input type="password" id="password" name="password" placeholder="输入密码"/>
                                         <input type="password" id="repwd" name="repassword" placeholder="确认密码"/>
-                                        <input name="email" id="email" placeholder="电子邮件" type="email"/>
-                                        <input type="text" id="code" name="user-name" style="width: 50%" id="code"
-                                               placeholder="验证码"/>　　<img alt="" src="assets/images/code/code.bmp">
+                                        <input name="email" id="email" placeholder="电子邮件" type="email" value="${requestScope.register_email}"/>
+                                        <input type="text" id="code" name="code" style="width: 50%"
+                                               placeholder="验证码"/>　　<img id="codeImg" alt="" src="kaptcha">
                                         <div class="button-box">
                                             <button type="submit" id="sub-btn"><span>会员注册</span></button>
                                         </div>
