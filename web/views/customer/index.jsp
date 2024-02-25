@@ -13,6 +13,15 @@
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css">
     <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("button.add-to-cart").click(function () {
+                // alert($(this).attr("furnId"))
+                // location.href 会发起请求，后面使用 ajax 优化
+                location.href = "<%=request.getContextPath() + "/"%>" + "cart?action=addCartItem&id=" + $(this).attr("furnId")
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -71,7 +80,9 @@
                         <a href="#offcanvas-cart"
                            class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">
                             <i class="icon-handbag"> 购物车</i>
-                            <span class="header-action-num">88</span>
+                            <c:if test="${not empty sessionScope.cart}">
+                                <span class="header-action-num">${sessionScope.cart.totalCount}</span>
+                            </c:if>
                         </a>
                         <a href="#offcanvas-mobile-menu"
                            class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">
@@ -137,7 +148,7 @@
                                                    title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                                                         class="icon-size-fullscreen"></i></a>
                                             </div>
-                                            <button title="Add To Cart" class=" add-to-cart">Add
+                                            <button title="Add To Cart" furnId="${furn.id}" class="add-to-cart">Add
                                                 To Cart
                                             </button>
                                         </div>
@@ -290,7 +301,7 @@
                 <div class="row flex-sm-row-reverse">
                     <div class="col-md-6 text-right">
                         <div class="payment-link">
-                            <img src="#" alt="">
+                            <%--<img src="#" alt="">--%>
                         </div>
                     </div>
                     <div class="col-md-6 text-left">

@@ -77,4 +77,15 @@
         <!--这样设计方便后续过滤器直接过滤 manage 下的文件需要登录才能访问-->
         <url-pattern>/kaptcha</url-pattern>
     </servlet-mapping>
+
+    <!--配置购物车的 servlet-->
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.cfx.furns.web.servlet.CartServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
 </web-app>
