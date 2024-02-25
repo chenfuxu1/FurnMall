@@ -16,8 +16,8 @@ public class CartTest {
 
     @Test
     public void testAddItem() {
-        mCart.addCartItem(new CartItem(1, "沙发", new BigDecimal(10.11), 100, new BigDecimal(10.11).multiply(new BigDecimal(100))));
-        mCart.addCartItem(new CartItem(2, "椅子", new BigDecimal(5.11), 3, new BigDecimal(5.11 ).multiply(new BigDecimal(3))));
+        mCart.addCartItem(new CartItem(1, "沙发", new BigDecimal(10.11), 100));
+        mCart.addCartItem(new CartItem(2, "椅子", new BigDecimal(5.11), 3));
         System.out.println(mCart);
     }
 }

@@ -52,13 +52,37 @@ public class CartServlet extends BaseServlet {
             session.setAttribute(CART, cart);
         }
         // 表明 session 中有购物车对象
-        CartItem cartItem = new CartItem(idInt, furn.getName(), furn.getPrice(), 1, furn.getPrice());
+        CartItem cartItem = new CartItem(idInt, furn.getName(), furn.getPrice(), 1);
         // 将家居对象添加到购物车
         cart.addCartItem(cartItem);
         Logit.d(TAG, "cart: " + cart);
         String referer = req.getHeader("Referer");
         resp.sendRedirect(referer); // 添加后，需要回到原界面，这里直接重定向到 referer 即可
+    }
 
-
+    /**
+     * 修改购物车中商品的数量
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void updateCartCount(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "updateCartCount...");
+        String id = req.getParameter("id");
+        String count = req.getParameter("count");
+        int idInt = StringToNumUtils.parseInt(id, 0);
+        int countInt = StringToNumUtils.parseInt(count, 1);
+        Logit.d(TAG, "id: " + id + " countInt: " + countInt);
+        HttpSession session = req.getSession();
+        Cart cart = (Cart) session.getAttribute(CART);
+        CartItem cartItem = cart.getCartItems().get(idInt);
+        if (cartItem == null) {
+            resp.sendRedirect(req.getContextPath() + "index.jsp");
+            return;
+        }
+        cartItem.updateCountAndTotalPrice(countInt);
+        String referer = req.getHeader("Referer");
+        resp.sendRedirect(referer); // 添加后，需要回到原界面，这里直接重定向到 referer 即可
     }
 }

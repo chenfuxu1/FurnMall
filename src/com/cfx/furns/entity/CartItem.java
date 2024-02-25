@@ -19,12 +19,15 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(Integer id, String name, BigDecimal price, Integer count, BigDecimal totalPrice) {
+    public CartItem(Integer id, String name, BigDecimal price, Integer count) {
         mId = id;
         mName = name;
         mPrice = price.setScale(2, BigDecimal.ROUND_HALF_UP);
         mCount = count;
-        mTotalPrice = totalPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+        if (mTotalPrice == null) {
+            mTotalPrice = new BigDecimal(mCount).multiply(mPrice);
+            mTotalPrice = mTotalPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+        }
     }
 
     public Integer getId() {
@@ -57,6 +60,15 @@ public class CartItem {
 
     public void setCount(Integer count) {
         mCount = count;
+    }
+
+    /**
+     * 更新个数和总价格
+     * @param count
+     */
+    public void updateCountAndTotalPrice(Integer count) {
+        mCount = count;
+        mTotalPrice = BigDecimal.valueOf(mCount).multiply(mPrice);
     }
 
     public BigDecimal getTotalPrice() {

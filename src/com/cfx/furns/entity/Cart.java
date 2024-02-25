@@ -40,9 +40,11 @@ public class Cart {
             mCartItems.put(cartItem.getId(), cartItem);
         } else {
             // 表明当前的购物车已经有过 cartItem，那么将其数量加 1，总价变化一下
-            item.setCount(item.getCount() + 1);
+            // item.setCount(item.getCount() + 1);
             // item.setTotalPrice(item.getTotalPrice().add(cartItem.getPrice()));
-            item.setTotalPrice(item.getPrice().multiply(new BigDecimal(item.getCount())));
+            // item.setTotalPrice(item.getPrice().multiply(new BigDecimal(item.getCount())));
+
+            item.updateCountAndTotalPrice(item.getCount() + 1);
         }
     }
 

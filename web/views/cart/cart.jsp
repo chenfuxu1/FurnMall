@@ -11,6 +11,33 @@
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css"/>
+    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var CartPlusMinus = $(".cart-plus-minus");
+            CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
+            CartPlusMinus.append('<div class="inc qtybutton">+</div>');
+            $(".qtybutton").on("click", function() {
+                var $button = $(this);
+                var oldValue = $button.parent().find("input").val();
+                var furnId = $button.parent().find("input").attr("furnId");
+                if ($button.text() === "+") {
+                    var newVal = parseFloat(oldValue) + 1;
+                } else {
+                    // Don't allow decrementing below zero
+                    if (oldValue > 1) {
+                        var newVal = parseFloat(oldValue) - 1;
+                    } else {
+                        newVal = 1;
+                    }
+                }
+                $button.parent().find("input").val();
+                // alert("furnId: " + furnId)
+                // 发出修改购物车的请求
+                location.href = "cart?action=updateCartCount&id=" + furnId + "&count=" + newVal
+            });
+        })
+    </script>
 </head>
 
 <body>
@@ -115,7 +142,7 @@
                                     <td class="product-quantity">
                                         <div class="cart-plus-minus">
                                             <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                   value="${item.value.count}"/>
+                                                   value="${item.value.count}" furnId="${item.value.id}"/>
                                         </div>
                                     </td>
                                     <td class="product-subtotal">$${item.value.totalPrice}</td>
