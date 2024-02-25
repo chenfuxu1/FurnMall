@@ -77,17 +77,17 @@
                         </c:if>
 
                         <!-- Single Wedge End -->
-                        <a href="#offcanvas-cart"
-                           class="header-action-btn header-action-btn-cart offcanvas-toggle pr-0">
+                        <a href="views/cart/cart.jsp"
+                           class="header-action-btn header-action-btn-cart pr-0">
                             <i class="icon-handbag"> 购物车</i>
                             <c:if test="${not empty sessionScope.cart}">
                                 <span class="header-action-num">${sessionScope.cart.totalCount}</span>
                             </c:if>
                         </a>
-                        <a href="#offcanvas-mobile-menu"
-                           class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">
-                            <i class="icon-menu"></i>
-                        </a>
+                        <%--<a href="#offcanvas-mobile-menu"--%>
+                        <%--   class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">--%>
+                        <%--    <i class="icon-menu"></i>--%>
+                        <%--</a>--%>
                     </div>
                 </div>
                 <!-- Header Action End -->

@@ -1,5 +1,7 @@
 package com.cfx.furns.entity;
 
+import com.cfx.furns.utils.Logit;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +15,13 @@ import java.util.Map;
  * 里面包含多个 CartItem
  **/
 public class Cart {
+    private static final String TAG = "Cart";
     // 存放多个 CartItem
     private HashMap<Integer, CartItem> mCartItems = new HashMap<>();
     // 购物车商品总个数
     private Integer mTotalCount = 0;
+    // 购物车商品总价格
+    private BigDecimal mTotalPrice;
 
     public Cart() {
     }
@@ -48,6 +53,19 @@ public class Cart {
             mTotalCount += value.getCount();
         }
         return mTotalCount;
+    }
+
+    public BigDecimal getTotalPrice() {
+        mTotalPrice = new BigDecimal(0);
+        for (Map.Entry<Integer, CartItem> itemEntry : mCartItems.entrySet()) {
+            CartItem value = itemEntry.getValue();
+            mTotalPrice = mTotalPrice.add(value.getTotalPrice());
+        }
+        return mTotalPrice;
+    }
+
+    public HashMap<Integer, CartItem> getCartItems() {
+        return mCartItems;
     }
 
     @Override
