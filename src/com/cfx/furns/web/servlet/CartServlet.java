@@ -76,13 +76,55 @@ public class CartServlet extends BaseServlet {
         Logit.d(TAG, "id: " + id + " countInt: " + countInt);
         HttpSession session = req.getSession();
         Cart cart = (Cart) session.getAttribute(CART);
-        CartItem cartItem = cart.getCartItems().get(idInt);
-        if (cartItem == null) {
-            resp.sendRedirect(req.getContextPath() + "index.jsp");
-            return;
+        if (cart != null) {
+            CartItem cartItem = cart.getCartItems().get(idInt);
+            if (cartItem == null) {
+                resp.sendRedirect(req.getContextPath() + "index.jsp");
+                return;
+            }
+            cartItem.updateCountAndTotalPrice(countInt);
         }
-        cartItem.updateCountAndTotalPrice(countInt);
         String referer = req.getHeader("Referer");
-        resp.sendRedirect(referer); // 添加后，需要回到原界面，这里直接重定向到 referer 即可
+        resp.sendRedirect(referer); // 修改后，需要回到原界面，这里直接重定向到 referer 即可
+    }
+
+    /**
+     * 删除购物车中的某个家居
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void deleteCartItem(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "deleteCartItem...");
+        String id = req.getParameter("id");
+        int idInt = StringToNumUtils.parseInt(id, 0);
+        Logit.d(TAG, "id: " + id);
+        HttpSession session = req.getSession();
+        Cart cart = (Cart) session.getAttribute(CART);
+        if (cart != null) {
+            cart.deleteCartItem(idInt);
+        }
+        String referer = req.getHeader("Referer");
+        resp.sendRedirect(referer); // 删除后，需要回到原界面，这里直接重定向到 referer 即可
+    }
+
+    /**
+     * 清空购物车
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void clearCart(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "clearCart...");
+        HttpSession session = req.getSession();
+        Cart cart = (Cart) session.getAttribute(CART);
+        if (cart != null) {
+            cart.clearCart();
+        }
+        session.removeAttribute(CART);
+        String referer = req.getHeader("Referer");
+        resp.sendRedirect(referer); // 删除后，需要回到原界面，这里直接重定向到 referer 即可
     }
 }

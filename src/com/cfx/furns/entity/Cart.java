@@ -70,6 +70,18 @@ public class Cart {
         return mCartItems;
     }
 
+    public void deleteCartItem(Integer furnId) {
+        if (furnId == null || furnId <= 0) {
+            Logit.d(TAG, "furnId is less than zero");
+            return;
+        }
+        mCartItems.remove(furnId);
+    }
+
+    public void clearCart() {
+        mCartItems.clear();
+    }
+
     @Override
     public String toString() {
         return "Cart{" +

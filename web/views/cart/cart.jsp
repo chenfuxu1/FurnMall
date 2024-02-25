@@ -17,6 +17,7 @@
             var CartPlusMinus = $(".cart-plus-minus");
             CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
             CartPlusMinus.append('<div class="inc qtybutton">+</div>');
+            // 监听修改购物车
             $(".qtybutton").on("click", function() {
                 var $button = $(this);
                 var oldValue = $button.parent().find("input").val();
@@ -36,6 +37,29 @@
                 // 发出修改购物车的请求
                 location.href = "cart?action=updateCartCount&id=" + furnId + "&count=" + newVal
             });
+
+            // 监听移除购物车中的某个家具
+            $(".product-remove").click(function () {
+                var $productRemove = $(this);
+                var furnId = $productRemove.attr("furnId")
+                // alert($productRemove.attr("furnId"))
+                // alert($productRemove.children().eq(0).html())
+
+                var isSured = window.confirm("你确定要删除 " + $productRemove.attr("furnName") + " 吗？")
+                if (!isSured) {
+                    return false;
+                }
+                $productRemove.children().eq(0).attr("href", "cart?action=deleteCartItem&id=" + furnId)
+            })
+
+            // 监听清空购物车
+            $("#clear_cart").click(function () {
+                var isSured = window.confirm("你确定要清空购物车吗？")
+                if (!isSured) {
+                    return false;
+                }
+                $(this).attr("href", "cart?action=clearCart")
+            })
         })
     </script>
 </head>
@@ -146,8 +170,8 @@
                                         </div>
                                     </td>
                                     <td class="product-subtotal">$${item.value.totalPrice}</td>
-                                    <td class="product-remove">
-                                        <a href="#"><i class="icon-close"></i></a>
+                                    <td class="product-remove" furnId="${item.value.id}" furnName="${item.value.name}">
+                                        <a ><i class="icon-close"></i></a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -158,13 +182,18 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
-                                <h4>共 ${sessionScope.cart.totalCount} 件商品 总价 ${sessionScope.cart.totalPrice} 元</h4>
+                                <c:if test="${empty sessionScope.cart}">
+                                    <h4>共 0 件商品 总价 0.00 元</h4>
+                                </c:if>
+                                <c:if test="${not empty sessionScope.cart}">
+                                    <h4>共 ${sessionScope.cart.totalCount} 件商品 总价 ${sessionScope.cart.totalPrice} 元</h4>
+                                </c:if>
                                 <div class="cart-shiping-update">
                                     <a href="#">购 物 车 结 账</a>
                                 </div>
                                 <div class="cart-clear">
                                     <button>继 续 购 物</button>
-                                    <a href="#">清 空 购 物 车</a>
+                                    <a id="clear_cart" href="#">清 空 购 物 车</a>
                                 </div>
                             </div>
                         </div>
