@@ -38,9 +38,15 @@ public class CartServlet extends BaseServlet {
         Logit.d(TAG, "id: " + id);
         int idInt = StringToNumUtils.parseInt(id, 0);
         Furn furn = mFurnService.queryFurnById(idInt);
+        String referer = req.getHeader("Referer");
         if (furn == null) {
             // 家居不存在
             // TODO: 2024/2/25
+            return;
+        }
+        if (furn.getStock() <= 0) {
+            // 表明没有库存了
+            resp.sendRedirect(referer); // 回到原界面，这里直接重定向到 referer 即可
         }
         // 家居存在
         HttpSession session = req.getSession();
@@ -56,7 +62,6 @@ public class CartServlet extends BaseServlet {
         // 将家居对象添加到购物车
         cart.addCartItem(cartItem);
         Logit.d(TAG, "cart: " + cart);
-        String referer = req.getHeader("Referer");
         resp.sendRedirect(referer); // 添加后，需要回到原界面，这里直接重定向到 referer 即可
     }
 

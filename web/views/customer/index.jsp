@@ -17,8 +17,11 @@
         $(function () {
             $("button.add-to-cart").click(function () {
                 // alert($(this).attr("furnId"))
-                // location.href 会发起请求，后面使用 ajax 优化
-                location.href = "<%=request.getContextPath() + "/"%>" + "cart?action=addCartItem&id=" + $(this).attr("furnId")
+                // 家居的库存量大于 0，点击才去请求
+                if ($(this).attr("furnStock") > 0) {
+                    // location.href 会发起请求，后面使用 ajax 优化
+                    location.href = "<%=request.getContextPath() + "/"%>" + "cart?action=addCartItem&id=" + $(this).attr("furnId")
+                }
             })
         })
     </script>
@@ -148,8 +151,13 @@
                                                    title="Quick view" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
                                                         class="icon-size-fullscreen"></i></a>
                                             </div>
-                                            <button title="Add To Cart" furnId="${furn.id}" class="add-to-cart">Add
-                                                To Cart
+                                            <button title="Add To Cart" furnId="${furn.id}" class="add-to-cart" furnStock="${furn.stock}">
+                                                <c:if test="${furn.stock > 0}">
+                                                    Add To Cart
+                                                </c:if>
+                                                <c:if test="${furn.stock <= 0}">
+                                                    暂时缺货
+                                                </c:if>
                                             </button>
                                         </div>
                                         <div class="content">
