@@ -11,57 +11,6 @@
     <link rel="stylesheet" href="assets/css/vendor/vendor.min.css"/>
     <link rel="stylesheet" href="assets/css/plugins/plugins.min.css"/>
     <link rel="stylesheet" href="assets/css/style.min.css"/>
-    <script type="text/javascript" src="script/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            var CartPlusMinus = $(".cart-plus-minus");
-            CartPlusMinus.prepend('<div class="dec qtybutton">-</div>');
-            CartPlusMinus.append('<div class="inc qtybutton">+</div>');
-            // 监听修改购物车
-            $(".qtybutton").on("click", function() {
-                var $button = $(this);
-                var oldValue = $button.parent().find("input").val();
-                var furnId = $button.parent().find("input").attr("furnId");
-                if ($button.text() === "+") {
-                    var newVal = parseFloat(oldValue) + 1;
-                } else {
-                    // Don't allow decrementing below zero
-                    if (oldValue > 1) {
-                        var newVal = parseFloat(oldValue) - 1;
-                    } else {
-                        newVal = 1;
-                    }
-                }
-                $button.parent().find("input").val();
-                // alert("furnId: " + furnId)
-                // 发出修改购物车的请求
-                location.href = "cart?action=updateCartCount&id=" + furnId + "&count=" + newVal
-            });
-
-            // 监听移除购物车中的某个家具
-            $(".product-remove").click(function () {
-                var $productRemove = $(this);
-                var furnId = $productRemove.attr("furnId")
-                // alert($productRemove.attr("furnId"))
-                // alert($productRemove.children().eq(0).html())
-
-                var isSured = window.confirm("你确定要删除 " + $productRemove.attr("furnName") + " 吗？")
-                if (!isSured) {
-                    return false;
-                }
-                $productRemove.children().eq(0).attr("href", "cart?action=deleteCartItem&id=" + furnId)
-            })
-
-            // 监听清空购物车
-            $("#clear_cart").click(function () {
-                var isSured = window.confirm("你确定要清空购物车吗？")
-                if (!isSured) {
-                    return false;
-                }
-                $(this).attr("href", "cart?action=clearCart")
-            })
-        })
-    </script>
 </head>
 
 <body>
@@ -106,7 +55,7 @@
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
                         <a href="index.jsp"><img width="280px" src="assets/images/logo/logo.png"
-                                                  alt="Site Logo"/></a>
+                                                 alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -136,7 +85,7 @@
 <!-- Cart Area Start -->
 <div class="cart-main-area pt-100px pb-100px">
     <div class="container">
-        <h3 class="cart-page-title">Your cart items</h3>
+        <h3 class="cart-page-title">订单-${requestScope.order_items.orderId}</h3>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                 <form action="#">
@@ -144,56 +93,32 @@
                         <table>
                             <thead>
                             <tr>
-                                <th>图片</th>
+
                                 <th>家居名</th>
                                 <th>单价</th>
                                 <th>数量</th>
                                 <th>金额</th>
-                                <th>操作</th>
+
                             </tr>
                             </thead>
                             <tbody>
-                            <%--循环展示 CartItem--%>
-                            <c:forEach items="${sessionScope.cart.cartItems}" var="item">
+                            <c:forEach items="${requestScope.order_items.orderItemList}" var="order_item">
                                 <tr>
-                                    <td class="product-thumbnail">
-                                        <a href="#"><img class="img-responsive ml-3"
-                                                         src="assets/images/product-image/1.jpg"
-                                                         alt=""/></a>
-                                    </td>
-                                    <td class="product-name"><a href="#">${item.value.name}</a></td>
-                                    <td class="product-price-cart"><span class="amount">$${item.value.price}</span></td>
-                                    <td class="product-quantity">
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                   value="${item.value.count}" furnId="${item.value.id}"/>
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal">$${item.value.totalPrice}</td>
-                                    <td class="product-remove" furnId="${item.value.id}" furnName="${item.value.name}">
-                                        <a ><i class="icon-close"></i></a>
-                                    </td>
+                                    <td class="product-name"><a href="#">${order_item.name}</a></td>
+                                    <td class="product-price-cart"><span class="amount">$${order_item.price}</span></td>
+                                    <td class="product-quantity">${order_item.count}</td>
+                                    <td class="product-subtotal">$${order_item.totalPrice}</td>
                                 </tr>
                             </c:forEach>
-
                             </tbody>
                         </table>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
-                                <c:if test="${empty sessionScope.cart}">
-                                    <h4>共 0 件商品 总价 0.00 元</h4>
-                                </c:if>
-                                <c:if test="${not empty sessionScope.cart}">
-                                    <h4>共 ${sessionScope.cart.totalCount} 件商品 总价 ${sessionScope.cart.totalPrice} 元</h4>
-                                </c:if>
-                                <div class="cart-shiping-update">
-                                    <a href="order?action=createOrder">购 物 车 结 账</a>
-                                </div>
+                                <h4>共 ${requestScope.order_items.count} 件商品 总价 ${requestScope.order_items.geListTotalPrice()} 元</h4>
                                 <div class="cart-clear">
-                                    <button>继 续 购 物</button>
-                                    <a id="clear_cart" href="#">清 空 购 物 车</a>
+                                    <a href="#">继 续 购 物</a>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +167,7 @@
                                     <ul class="align-items-center">
                                         <li class="li"><a class="single-link" href="my-account.html">我的账号</a>
                                         </li>
-                                        <li class="li"><a class="single-link" href="cart.jsp">我的购物车</a></li>
+                                        <li class="li"><a class="single-link" href="cart.html">我的购物车</a></li>
                                         <li class="li"><a class="single-link" href="login.html">登录</a></li>
                                         <li class="li"><a class="single-link" href="wishlist.html">感兴趣的</a></li>
                                         <li class="li"><a class="single-link" href="checkout.html">结账</a></li>

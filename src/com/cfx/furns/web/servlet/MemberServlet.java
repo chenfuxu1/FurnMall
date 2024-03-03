@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.cfx.furns.utils.Constants.MEMBER;
 import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
 /**
@@ -62,9 +63,7 @@ public class MemberServlet extends BaseServlet {
         Logit.d(TAG, "登录成功！");
 
         HttpSession session = req.getSession();
-        session.setAttribute("user_name", mUserName);
-        session.setMaxInactiveInterval(20);
-
+        session.setAttribute(MEMBER, member);
         req.getRequestDispatcher(DISPATCHER_LOGIN_SUCCESS).forward(req, resp);
     }
 

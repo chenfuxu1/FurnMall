@@ -88,4 +88,15 @@
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
     </servlet-mapping>
+
+    <!--配置订单的 servlet-->
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.cfx.furns.web.servlet.OrderServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
 </web-app>

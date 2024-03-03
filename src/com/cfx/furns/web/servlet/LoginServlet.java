@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.cfx.furns.utils.Constants.MEMBER;
+
 /**
  * Project: FurnMall
  * Create By: Chen.F.X
@@ -48,7 +50,7 @@ public class LoginServlet extends HttpServlet {
         Logit.d(TAG, "登录成功！");
 
         HttpSession session = req.getSession();
-        session.setAttribute("user_name", userName);
+        session.setAttribute(MEMBER, member);
         session.setMaxInactiveInterval(50);
         Logit.d(TAG, "cfx session.getId(): " + session.getId());
 

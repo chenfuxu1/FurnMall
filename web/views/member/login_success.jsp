@@ -32,14 +32,14 @@
                 <!-- Header Action Start -->
                 <div class="col align-self-center">
                     <div class="header-actions">
-                        <c:if test="${empty sessionScope.user_name}">
+                        <c:if test="${empty sessionScope.MEMBER.userName}">
                             <div class="header-bottom-set dropdown">
                                 <a href="views/member/login.jsp">登录|注册</a>
                             </div>
                         </c:if>
-                        <c:if test="${not empty sessionScope.user_name}">
+                        <c:if test="${not empty sessionScope.MEMBER.userName}">
                             <div class="header-bottom-set dropdown">
-                                欢迎 ${sessionScope.user_name}
+                                欢迎 ${sessionScope.MEMBER.userName}
                             </div>
                         </c:if>
 

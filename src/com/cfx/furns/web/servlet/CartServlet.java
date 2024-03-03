@@ -5,7 +5,6 @@ import com.cfx.furns.entity.CartItem;
 import com.cfx.furns.entity.Furn;
 import com.cfx.furns.service.IFurnService;
 import com.cfx.furns.service.serviceimpl.FurnServiceImpl;
-import com.cfx.furns.utils.DataUtils;
 import com.cfx.furns.utils.Logit;
 import com.cfx.furns.utils.StringToNumUtils;
 
@@ -15,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static com.cfx.furns.utils.Constants.CART;
+
 /**
  * Project: FurnMall
  * Create By: Chen.F.X
@@ -22,7 +23,6 @@ import java.io.IOException;
  **/
 public class CartServlet extends BaseServlet {
     private static final String TAG = "CartServlet";
-    private static final String CART = "cart";
     private IFurnService mFurnService = new FurnServiceImpl();
 
     /**

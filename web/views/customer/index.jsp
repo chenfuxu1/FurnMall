@@ -57,16 +57,16 @@
                         </div>
 
                         <%--如果 session 中用户名为空，表示未登陆过--%>
-                        <c:if test="${empty sessionScope.user_name}">
+                        <c:if test="${empty sessionScope.MEMBER.userName}">
                             <div class="header-bottom-set dropdown">
                                 <a href="views/member/login.jsp">登录|注册</a>
                             </div>
                         </c:if>
 
                         <%--如果 session 中用户名不为空，表示登陆过--%>
-                        <c:if test="${not empty sessionScope.user_name}">
+                        <c:if test="${not empty sessionScope.MEMBER.userName}">
                             <div class="header-bottom-set dropdown">
-                                <a >欢迎 ${sessionScope.user_name}</a>
+                                <a >欢迎 ${sessionScope.MEMBER.userName}</a>
                             </div>
                             <div class="header-bottom-set dropdown">
                                 <a href="#">订单管理</a>
