@@ -36,10 +36,10 @@
                             <a>欢迎: ${sessionScope.MEMBER.userName}</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="#">订单管理</a>
+                            <a href="order?action=showOrder">订单管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="#">安全退出</a>
+                            <a href="member?action=logout">安全退出</a>
                         </div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="cart-shiping-update-wrapper">
-                                <h4>共 ${requestScope.order_items.count} 件商品 总价 ${requestScope.order_items.geListTotalPrice()} 元</h4>
+                                <h4>共 ${requestScope.order_items.count} 件商品 总价 ${requestScope.order_items.listTotalPrice} 元</h4>
                                 <div class="cart-clear">
                                     <a href="#">继 续 购 物</a>
                                 </div>

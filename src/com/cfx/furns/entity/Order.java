@@ -20,6 +20,9 @@ public class Order {
     private BigDecimal mTotalPrice; // 订单总价格
     private String mStatus; // 状态
     private String mMemberName; // 用户名
+    private Integer mCount;
+    private List<OrderItem> mOrderItemList = new ArrayList<>();
+    private BigDecimal mListTotalPrice;
 
     public Order() {
     }
@@ -83,6 +86,36 @@ public class Order {
 
     public void setMemberName(String memberName) {
         mMemberName = memberName;
+    }
+
+    public Integer getCount() {
+        mCount = 0;
+        for (OrderItem orderItem : mOrderItemList) {
+            mCount += orderItem.getCount();
+        }
+        return mCount;
+    }
+
+    public void setCount(Integer count) {
+        mCount = count;
+    }
+
+    public List<OrderItem> getOrderItemList() {
+        return mOrderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        mOrderItemList.clear();
+        mOrderItemList.addAll(orderItemList);
+    }
+
+    public BigDecimal getListTotalPrice() {
+        mListTotalPrice = new BigDecimal(0);
+        for (OrderItem orderItem : mOrderItemList) {
+            mListTotalPrice = mListTotalPrice.add(orderItem.getTotalPrice());
+        }
+        mListTotalPrice.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return mListTotalPrice;
     }
 
     @Override

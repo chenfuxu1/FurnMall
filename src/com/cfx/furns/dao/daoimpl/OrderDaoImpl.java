@@ -20,7 +20,7 @@ public class OrderDaoImpl extends BasicDao<Order> implements IOrderDao {
         if (name == null || "".equals(name)) {
             Logit.d(TAG, "name is null");
         }
-        String sql = "select order_id orderId, order_time orderTime, total_price totalPrice, `status`, member_name memberName from `order` where member_name = ?;";
+        String sql = "select order_id orderId, order_time orderTime, total_price totalPrice, `status`, member_name memberName from `order` where member_name = ? order by order_id desc;";
         return queryMulti(sql, Order.class, name);
     }
 
@@ -29,7 +29,7 @@ public class OrderDaoImpl extends BasicDao<Order> implements IOrderDao {
         if (orderId == null || "".equals(orderId)) {
             Logit.d(TAG, "orderId is null");
         }
-        String sql = "select order_id orderId, order_time orderTime, total_price totalPrice, `status`, member_name memberName from `order` where order_id = ?;";
+        String sql = "select order_id orderId, order_time orderTime, total_price totalPrice, `status`, member_name memberName from `order` where order_id = ? order by order_id desc;";
         return querySingle(sql, Order.class, orderId);
     }
 

@@ -37,10 +37,10 @@
                         </div>
 
                         <div class="header-bottom-set dropdown">
-                            <a href="#">订单管理</a>
+                            <a href="order?action=showOrder">订单管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="#">安全退出</a>
+                            <a href="member?action=logout">安全退出</a>
                         </div>
                     </div>
                 </div>
@@ -86,29 +86,17 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:if test="${not empty requestScope.order}">
-                            <tr>
-                                <td class="product-name">${requestScope.order.orderId}</td>
-                                <td class="product-name">${requestScope.order.orderTimeStr}</td>
-                                <td class="product-price-cart"><span class="amount">${requestScope.order.totalPrice}</span></td>
-                                <td class="product-name"><a href="#">${requestScope.order.status}</a></td>
-                                <td class="product-remove">
-                                    <a href="order?action=showOrderDetails&orderId=${requestScope.order.orderId}"><i
-                                            class="icon-eye"></i></a>
-                                </td>
-                            </tr>
-                            </c:if>
-<%--                            <c:forEach items="${requestScope.orders}" var="order">--%>
-<%--                                <tr>--%>
-<%--                                    <td class="product-name">${order.orderId}</td>--%>
-<%--                                    <td class="product-name">${order.orderTimeStr}</td>--%>
-<%--                                    <td class="product-price-cart"><span class="amount">${order.totalPrice}</span></td>--%>
-<%--                                    <td class="product-name"><a href="#">${order.status}</a></td>--%>
-<%--                                    <td class="product-remove">--%>
-<%--                                        <a href="order?action=showOrderDetails&orderId=${order.orderId}"><i class="icon-eye"></i></a>--%>
-<%--                                    </td>--%>
-<%--                                </tr>--%>
-<%--                            </c:forEach>--%>
+                            <c:forEach items="${requestScope.orders}" var="order">
+                                <tr>
+                                    <td class="product-name">${order.orderId}</td>
+                                    <td class="product-name">${order.orderTimeStr}</td>
+                                    <td class="product-price-cart"><span class="amount">${order.totalPrice}</span></td>
+                                    <td class="product-name"><a href="#">${order.status}</a></td>
+                                    <td class="product-remove">
+                                        <a href="order?action=showOrderDetails&orderId=${order.orderId}"><i class="icon-eye"></i></a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

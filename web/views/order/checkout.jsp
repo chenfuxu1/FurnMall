@@ -35,7 +35,7 @@
                             <a>欢迎: ${sessionScope.MEMBER.userName}</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="#">订单管理</a>
+                            <a href="order?action=showOrder">订单管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
                             <a href="member?action=logout">安全退出</a>
@@ -74,7 +74,7 @@
                 <div class="login-register-wrapper">
                     <div class="login-register-tab-list nav">
                         <%--点击跳转到用户订单页--%>
-                        <a class="active" href="order?action=showOrder&orderId=${sessionScope.orderId}">
+                        <a class="active" href="order?action=showOrder">
                             <h4>订单已结算, 订单号 - ${sessionScope.orderId}</h4>
                         </a>
                     </div>

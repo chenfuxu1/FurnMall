@@ -10,10 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.cfx.furns.utils.Constants.*;
 
@@ -79,7 +77,7 @@ public class OrderServlet extends BaseServlet {
     }
 
     /**
-     * 展示用户订单
+     * 展示该用户的订单
      * @param req
      * @param resp
      * @throws ServletException
@@ -87,10 +85,17 @@ public class OrderServlet extends BaseServlet {
      */
     private void showOrder(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Logit.d(TAG, "showOrder...");
-        String orderId = req.getParameter(ORDER_ID);
-        Logit.d(TAG, "orderId: " + orderId);
-        Order order = mOrderService.queryOrderByID(orderId);
-        req.setAttribute(ORDER, order);
+        Object memberObj = req.getSession().getAttribute(Constants.MEMBER);
+        if (!(memberObj instanceof Member)) {
+            // 用户没有进行登录
+            Logit.d(TAG, "memberObj is null");
+            // 跳转到登录界面，让用户登录
+            resp.sendRedirect(req.getContextPath() + DISPATCHER_LOGIN);
+            return;
+        }
+        Member member = (Member) memberObj;
+        List<Order> orders = mOrderService.queryOrderByName(member.getUserName());
+        req.setAttribute(ORDERS, orders);
         // 转发到订单页面
         req.getRequestDispatcher(DISPATCHER_ORDER).forward(req, resp);
     }
@@ -108,7 +113,7 @@ public class OrderServlet extends BaseServlet {
         Logit.d(TAG, "orderId: " + orderId);
         List<OrderItem> orderItems = mOrderService.queryOrderItemsByID(orderId);
         Order order = new Order();
-        // order.setOrderItemList(orderItems);
+        order.setOrderItemList(orderItems);
         order.setOrderId(orderId);
         req.setAttribute(ORDER_ITEMS, order);
         // 转发到订单具体项页面

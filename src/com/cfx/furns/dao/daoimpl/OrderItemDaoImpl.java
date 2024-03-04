@@ -23,7 +23,7 @@ public class OrderItemDaoImpl extends BasicDao<OrderItem> implements IOrderItemD
         if (orderId == null || "".equals(orderId)) {
             return null;
         }
-        String sql = "select id, name, price, count, total_price totalPrice, order_id orderId from " + TABLE_ORDER_ITEM + " where order_id = ?";
+        String sql = "select id, name, price, count, total_price totalPrice, order_id orderId from " + TABLE_ORDER_ITEM + " where order_id = ? order by order_id desc";
         return queryMulti(sql, OrderItem.class, orderId);
     }
 
