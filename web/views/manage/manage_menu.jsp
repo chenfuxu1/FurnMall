@@ -40,7 +40,7 @@
                             <a href="manage/furn?action=page&pageNo=1">家居管理</a>
                         </div>
                         <div class="header-bottom-set dropdown">
-                            <a href="views/manage/manager.html">订单管理</a>
+                            <a href="order?action=showOrder">订单管理</a>
                         </div>
                     </div>
                 </div>

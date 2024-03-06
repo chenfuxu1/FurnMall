@@ -1,6 +1,7 @@
 package com.cfx.furns.web.servlet;
 
 import com.cfx.furns.entity.Admin;
+import com.cfx.furns.entity.Member;
 import com.cfx.furns.service.IAdminService;
 import com.cfx.furns.service.serviceimpl.AdminServiceImpl;
 import com.cfx.furns.utils.Logit;
@@ -8,7 +9,10 @@ import com.cfx.furns.utils.Logit;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+
+import static com.cfx.furns.utils.Constants.MEMBER;
 
 /**
  * Project: FurnMall
@@ -50,6 +54,9 @@ public class AdminServlet extends BaseServlet {
             req.getRequestDispatcher(DISPATCHER_ADMIN_FAIL).forward(req, resp);
             return;
         }
+        Member member = new Member(0, userName, userPassword, null);
+        HttpSession session = req.getSession();
+        session.setAttribute(MEMBER, member);
         req.getRequestDispatcher(DISPATCHER_ADMIN_SUCCESS).forward(req, resp);
         Logit.d(TAG, "登录成功");
     }

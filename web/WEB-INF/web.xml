@@ -4,6 +4,33 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
 
+    <!--配置权限的过滤器，校验用户有没有登录-->
+    <filter>
+        <filter-name>AuthorityFilter</filter-name>
+        <filter-class>com.cfx.furns.web.filter.AuthorityFilter</filter-class>
+        <init-param>
+            <!--这里配置需要放行的 url-->
+            <param-name>excludedUrls</param-name>
+            <param-value>/views/manage/manage_login.jsp,/views/member/login.jsp</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthorityFilter</filter-name>
+        <!--1.这里配置需要拦截的 url 路径 -->
+        <!--2.对于不需要拦截的路径就不去配置-->
+        <!--3.如果配置的目录下面，有的需要拦截，有的不拦截，那么不拦截的在 excludedUrls 中单独配置-->
+        <url-pattern>/views/cart/*</url-pattern>
+        <url-pattern>/views/manage/*</url-pattern>
+        <url-pattern>/views/member/*</url-pattern>
+        <url-pattern>/views/order/*</url-pattern>
+
+        <!--拦截 servlet 的配置，因为 servlet 也是属于 web 层-->
+        <url-pattern>/cart</url-pattern>
+        <url-pattern>/manage/furn</url-pattern>
+        <url-pattern>/order</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.cfx.furns.web.servlet.RegisterServlet</servlet-class>
