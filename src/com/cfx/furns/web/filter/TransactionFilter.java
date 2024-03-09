@@ -30,7 +30,8 @@ public class TransactionFilter implements Filter {
             JdbcUtilsByDruid.commit();
         } catch (Exception e) {
             JdbcUtilsByDruid.rollback(); // 回滚
-            Logit.d(TAG, "e: " + e);
+            // 异常继续向外抛给 tomcat，这样才能捕获到异常状态码，显示对应错误页面
+            throw new RuntimeException(e);
         }
     }
 
