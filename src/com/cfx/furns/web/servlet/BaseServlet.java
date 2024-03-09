@@ -47,8 +47,7 @@ public abstract class BaseServlet extends HttpServlet {
             method.invoke(this, req, resp);
         } catch (Exception e) {
             Logit.d(TAG, "Exception: " + e);
-            resp.getWriter().write("<h1>请求参数有误！</h1>");
-            resp.getWriter().flush();
+            throw new RuntimeException(e);
         }
     }
 

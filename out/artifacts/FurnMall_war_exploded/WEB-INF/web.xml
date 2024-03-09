@@ -31,6 +31,16 @@
         <url-pattern>/order</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>TransactionFilter</filter-name>
+        <filter-class>com.cfx.furns.web.filter.TransactionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.cfx.furns.web.servlet.RegisterServlet</servlet-class>

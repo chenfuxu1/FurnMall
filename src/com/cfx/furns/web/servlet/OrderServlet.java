@@ -4,6 +4,7 @@ import com.cfx.furns.entity.*;
 import com.cfx.furns.service.IOrderService;
 import com.cfx.furns.service.serviceimpl.OrderServiceImpl;
 import com.cfx.furns.utils.Constants;
+import com.cfx.furns.utils.JdbcUtilsByDruid;
 import com.cfx.furns.utils.Logit;
 
 import javax.servlet.ServletException;
@@ -69,8 +70,26 @@ public class OrderServlet extends BaseServlet {
         }
         // 4.用户已经登录，生成订单
         Member member = (Member) memberObj;
-        // 5.生成订单
-        String orderId = mOrderService.saveOrder(cart, member.getUserName());
+
+        /**
+         * 如果只希望对 saveOrder 进行事务控制
+         * 那么直接在此处进行控制即可，不需要用到过滤器来统一进行控制
+         */
+        // String orderId = null;
+        // try {
+        //     // 5.生成订单
+        //     orderId = mOrderService.saveOrder(cart, member.getUserName());
+        //     JdbcUtilsByDruid.commit(); // 执行成功了，提交事务
+        // } catch (Exception e) {
+        //     // 如果失败了，进行回滚
+        //     JdbcUtilsByDruid.rollback();
+        //     Logit.d(TAG, "e: " + e);
+        // }
+
+        // 这里还是使用过滤器统一管理
+        String orderId = mOrderService.saveOrder(cart, member.getUserName());;
+
+
         req.getSession().setAttribute(ORDER_ID, orderId);
         // 重定向到 checkout.jsp
         resp.sendRedirect(req.getContextPath() + DISPATCHER_ORDER_CHECKOUT);

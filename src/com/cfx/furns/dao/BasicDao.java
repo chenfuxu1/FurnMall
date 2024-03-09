@@ -30,8 +30,6 @@ public class BasicDao<T> {
             return update;
         } catch (SQLException e) {
             throw new RuntimeException(e); // 将编译异常 -> 运行异常, 抛出
-        } finally {
-            JdbcUtilsByDruid.close(null, null, connection);
         }
     }
 
@@ -50,8 +48,6 @@ public class BasicDao<T> {
             return mQueryRunner.query(connection, sql, new BeanListHandler<>(clazz), parameters);
         } catch (SQLException e) {
             throw new RuntimeException(e); // 将编译异常 -> 运行异常, 抛出
-        } finally {
-            JdbcUtilsByDruid.close(null, null, connection);
         }
     }
 
@@ -63,8 +59,6 @@ public class BasicDao<T> {
             return mQueryRunner.query(connection, sql, new BeanHandler<>(clazz), parameters);
         } catch (SQLException e) {
             throw new RuntimeException(e); // 将编译异常 -> 运行异常, 抛出
-        } finally {
-            JdbcUtilsByDruid.close(null, null, connection);
         }
     }
 
@@ -76,8 +70,6 @@ public class BasicDao<T> {
             return mQueryRunner.query(connection, sql, new ScalarHandler(), parameters);
         } catch (SQLException e) {
             throw new RuntimeException(e); // 将编译异常 -> 运行异常, 抛出
-        } finally {
-            JdbcUtilsByDruid.close(null, null, connection);
         }
     }
 }
