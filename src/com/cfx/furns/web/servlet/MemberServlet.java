@@ -6,12 +6,15 @@ import com.cfx.furns.service.IMemberService;
 import com.cfx.furns.service.serviceimpl.LoginServiceImpl;
 import com.cfx.furns.service.serviceimpl.MemberServiceImpl;
 import com.cfx.furns.utils.Logit;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.cfx.furns.utils.Constants.MEMBER;
 import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
@@ -69,8 +72,9 @@ public class MemberServlet extends BaseServlet {
 
     /**
      * 处理退出登录逻辑
-     *
+     * <p>
      * 只需将 session 销毁即可
+     *
      * @param req
      * @param resp
      * @throws ServletException
@@ -136,5 +140,58 @@ public class MemberServlet extends BaseServlet {
         }
         // 注册成功，返回成功界面
         req.getRequestDispatcher(DISPATCHER_REGISTER_SUCCESS).forward(req, resp);
+    }
+
+    /**
+     * 判断用户名是否存在
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void isExistUserName(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "isExistUserName...");
+        String userName = req.getParameter("username");
+        boolean existUserName = mMemberService.isExistUserName(userName);
+
+        // String result = "{\"isExistUserName\":\"" + existUserName + "\"}
+
+        HashMap<String, String> resultMap = new HashMap();
+        resultMap.put("isExistUserName", String.valueOf(existUserName));
+
+        resultMap.put("phone", "123456");
+        resultMap.put("email", "zhangsan@qq.com");
+
+        Gson gson = new Gson();
+        String result = gson.toJson(resultMap);
+        resp.getWriter().write(result);
+        resp.getWriter().flush();
+    }
+
+    /**
+     * 判断输入验证码是否正确
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void isCodeRight(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Logit.d(TAG, "isCodeRight...");
+        // 1.获取用户提交的验证码
+        String code = req.getParameter("code");
+        // 2.从 session 中获取缓存的验证码进行比对
+        HttpSession session = req.getSession();
+        String token = (String) session.getAttribute(KAPTCHA_SESSION_KEY);
+        HashMap<String, String> resultMap = new HashMap();
+        if (token == null || !token.equalsIgnoreCase(code)) {
+            resultMap.put("isCodeRight", "false");
+        } else {
+            resultMap.put("isCodeRight", "true");
+        }
+        Gson gson = new Gson();
+        String result = gson.toJson(resultMap);
+        resp.getWriter().write(result);
+        resp.getWriter().flush();
     }
 }

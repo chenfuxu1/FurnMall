@@ -96,6 +96,78 @@
                  */
                 this.src = <%=request.getContextPath() + "/"%> +"kaptcha?date=" + new Date();
             })
+
+            // 增加注册时，用户名失去焦点，发出 ajax 请求，验证用户名是否存在
+            $("#username").blur(function () {
+                var userName = $(this).val();
+                // alert(userName)
+                $.getJSON(
+                    "member", // 请求 url
+                    { // 请求 data
+                        action: "isExistUserName",
+                        username: userName,
+                        data: new Date()
+                    },
+                    function (data, status, xhr) { // 请求成功的回调函数
+                        console.log("data: ", data)
+                        console.log("status: ", status)
+                        console.log("isExistUserName: " + data.isExistUserName)
+                        if ("true" === data.isExistUserName) {
+                            $("span.register_error_msg").text("用户名不可用")
+                        } else {
+                            $("span.register_error_msg").text("")
+                        }
+                    }
+                )
+            })
+
+            // 增加用户登录时，用户名失去焦点，发出 ajax 请求，验证用户名是否存在
+            $("#login_user_name").blur(function () {
+                var userName = $(this).val();
+                // alert(userName)
+                $.getJSON(
+                    "member", // 请求 url
+                    { // 请求 data
+                        action: "isExistUserName",
+                        username: userName,
+                        data: new Date()
+                    },
+                    function (data, status, xhr) { // 请求成功的回调函数
+                        console.log("data: ", data)
+                        console.log("status: ", status)
+                        console.log("isExistUserName: " + data.isExistUserName)
+                        if ("true" !== data.isExistUserName) {
+                            $("span.login_error_msg").text("用户名不存在")
+                        } else {
+                            $("span.login_error_msg").text("")
+                        }
+                    }
+                )
+            })
+
+            // 增加用户注册时，验证码失去焦点，发出 ajax 请求，验证验证码是否输入正确
+            $("#code").blur(function () {
+                var code = $(this).val();
+                // alert(code)
+                $.getJSON(
+                    "member", // 请求 url
+                    { // 请求 data
+                        action: "isCodeRight",
+                        code: code,
+                        data: new Date()
+                    },
+                    function (data, status, xhr) { // 请求成功的回调函数
+                        console.log("data: ", data)
+                        console.log("status: ", status)
+                        console.log("isCodeRight: " + data.isCodeRight)
+                        if ("true" !== data.isCodeRight) {
+                            $("span.register_error_msg").text("输入验证码不正确")
+                        } else {
+                            $("span.register_error_msg").text("")
+                        }
+                    }
+                )
+            })
         })
     </script>
 </head>
