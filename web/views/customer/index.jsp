@@ -20,7 +20,30 @@
                 // 家居的库存量大于 0，点击才去请求
                 if ($(this).attr("furnStock") > 0) {
                     // location.href 会发起请求，后面使用 ajax 优化
-                    location.href = "<%=request.getContextPath() + "/"%>" + "cart?action=addCartItem&id=" + $(this).attr("furnId")
+                    <%--location.href = "<%=request.getContextPath() + "/"%>" + "cart?action=addCartItem&id=" + $(this).attr("furnId")--%>
+
+                    // 通过 ajax 发起请求进行局部刷新
+                    $.getJSON(
+                        "cart", // 请求 url
+                        { // 请求 data
+                            action: "addCartItemByAjax",
+                            id: $(this).attr("furnId")
+                        },
+                        function (data, status, xhr) { // 请求成功的回调函数
+                            console.log("data: ", data)
+                            console.log("data.addCartItem: " + data.addCartItem)
+                            console.log("totalCount: ", data.totalCount)
+                            if (data.url == undefined) {
+                                if ("true" === data.addCartItem) {
+                                    $("span.header-action-num").show()
+                                    $("span.header-action-num").text(data.totalCount)
+                                }
+                            } else {
+                                location.href = "<%=request.getContextPath() + "/"%>" + data.url
+                            }
+
+                        }
+                    )
                 }
             })
         })
@@ -83,9 +106,7 @@
                         <a href="views/cart/cart.jsp"
                            class="header-action-btn header-action-btn-cart pr-0">
                             <i class="icon-handbag"> 购物车</i>
-                            <c:if test="${not empty sessionScope.cart}">
-                                <span class="header-action-num">${sessionScope.cart.totalCount}</span>
-                            </c:if>
+                            <span class="header-action-num" style="display: none">${sessionScope.cart.totalCount}</span>
                         </a>
                         <%--<a href="#offcanvas-mobile-menu"--%>
                         <%--   class="header-action-btn header-action-btn-menu offcanvas-toggle d-lg-none">--%>

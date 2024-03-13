@@ -2,13 +2,17 @@ package com.cfx.furns.web.filter;
 
 import com.cfx.furns.entity.Member;
 import com.cfx.furns.utils.Logit;
+import com.cfx.furns.utils.WebUtils;
+import com.google.gson.Gson;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.cfx.furns.utils.Constants.MEMBER;
@@ -43,14 +47,30 @@ public class AuthorityFilter implements Filter {
             // 1.获取 session 中是否有 member 用户对象
             Object memberObj = httpServletRequest.getSession().getAttribute(MEMBER);
             if (!(memberObj instanceof Member)) {
-                /**
-                 * 用户没有登录，直接跳转到用户登录界面
-                 * 这里使用请求转发，不能使用重定向，因为使用重定向还会走过滤器，形成死循环
-                 * 但使用请求转发不会在走过滤器了，直接转发到用户登录界面
-                 */
-                httpServletRequest.getRequestDispatcher("/views/member/login.jsp")
-                        .forward(servletRequest, servletResponse);
-                Logit.d(TAG, "user is not login");
+                if (WebUtils.isAjaxRequest(httpServletRequest)) {
+                    /**
+                     * 该请求为 ajax 请求，浏览器不会进行转发、重定向
+                     * 可以将要转发的 url 以 json 的格式返回
+                     * 在前端检测到有 url，那么进行转发
+                     */
+                    HashMap<String, String> resultMap = new HashMap();
+
+                    resultMap.put("url", "views/member/login.jsp");
+                    Gson gson = new Gson();
+                    String result = gson.toJson(resultMap);
+                    servletResponse.getWriter().write(result);
+                    servletResponse.getWriter().flush();
+                } else {
+                    /**
+                     * 用户没有登录，直接跳转到用户登录界面
+                     * 这里使用请求转发，不能使用重定向，因为使用重定向还会走过滤器，形成死循环
+                     * 但使用请求转发不会在走过滤器了，直接转发到用户登录界面
+                     */
+                    httpServletRequest.getRequestDispatcher("/views/member/login.jsp")
+                            .forward(servletRequest, servletResponse);
+                    Logit.d(TAG, "user is not login");
+                }
+
                 return;
             }
         }
