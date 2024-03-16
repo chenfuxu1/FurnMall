@@ -41,6 +41,20 @@
                 return true
             })
         })
+
+        function prev(event) {
+            // 获取展示图片的区域
+            var img = document.getElementById("prevView");
+            // 获取文件对象
+            var file = event.files[0];
+            // 获取文件阅读器：Js 的一个类，直接使用即可
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                // 给 img 的 src 设置图片 url
+                img.setAttribute("src", this.result);
+            }
+        }
     </script>
 </head>
 
@@ -104,9 +118,48 @@
         <h3 class="cart-page-title">家居后台管理-添加家居</h3>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                <form action="manage/furn" method="post">
-                    <input type="hidden" name="action" value="addFurn">
-                    <input type="hidden" name="pageNo" value="${param.pageNo}">
+                <%--<form action="manage/furn" method="post">--%>
+                <%--    <input type="hidden" name="action" value="addFurn">--%>
+                <%--    <input type="hidden" name="pageNo" value="${param.pageNo}">--%>
+                <%--    <div class="table-content table-responsive cart-table-content">--%>
+                <%--        <table>--%>
+                <%--            <thead>--%>
+                <%--            <tr>--%>
+                <%--                <th>图片</th>--%>
+                <%--                <th>家居名</th>--%>
+                <%--                <th>商家</th>--%>
+                <%--                <th>价格</th>--%>
+                <%--                <th>销量</th>--%>
+                <%--                <th>库存</th>--%>
+                <%--                <th>操作</th>--%>
+                <%--            </tr>--%>
+                <%--            </thead>--%>
+                <%--            <tbody>--%>
+                <%--            <tr>--%>
+                <%--                <td class="product-thumbnail">--%>
+                <%--                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/default.jpg"--%>
+                <%--                                     alt=""/></a>--%>
+                <%--                </td>--%>
+                <%--                <td class="product-name"><input name="name" style="width: 60%" type="text" value="Name"/></td>--%>
+                <%--                <td class="product-name"><input name="maker" style="width: 90%" type="text" value="蚂蚁家居"/></td>--%>
+                <%--                <td class="product-price-cart"><input name="price" id="price" style="width: 90%" type="text" value="60.00"/></td>--%>
+                <%--                <td class="product-quantity">--%>
+                <%--                    <input name="sales" style="width: 90%" type="text" id="sales" value="100"/>--%>
+                <%--                </td>--%>
+                <%--                <td class="product-quantity">--%>
+                <%--                    <input name="stock" style="width: 90%" type="text" id="stock" value="80"/>--%>
+                <%--                </td>--%>
+                <%--                <td>--%>
+                <%--                    <input type="submit" id="add_btn" style="width: 90%;background-color: silver;border: silver;border-radius: 20%;" value="添加家居"/>--%>
+                <%--                </td>--%>
+                <%--            </tr>--%>
+                <%--            </tbody>--%>
+                <%--        </table>--%>
+                <%--    </div>--%>
+                <%--</form>--%>
+
+                <form action="manage/furn?action=addFurnByPic" method="post" enctype="multipart/form-data">
+0                    <input type="hidden" name="pageNo" value="${param.pageNo}">
                     <div class="table-content table-responsive cart-table-content">
                         <table>
                             <thead>
@@ -123,8 +176,13 @@
                             <tbody>
                             <tr>
                                 <td class="product-thumbnail">
-                                    <a href="#"><img class="img-responsive ml-3" src="assets/images/product-image/default.jpg"
-                                                     alt=""/></a>
+                                    
+                                    <div id="pic">
+                                        <img id="prevView" class="img-responsive ml-3"
+                                             src="assets/images/product-image/default.jpg"
+                                             alt=""/>
+                                        <input type="file" name="imgPath" id="" value="" onchange="prev(this)"/>
+                                    </div>
                                 </td>
                                 <td class="product-name"><input name="name" style="width: 60%" type="text" value="Name"/></td>
                                 <td class="product-name"><input name="maker" style="width: 90%" type="text" value="蚂蚁家居"/></td>
@@ -136,8 +194,6 @@
                                     <input name="stock" style="width: 90%" type="text" id="stock" value="80"/>
                                 </td>
                                 <td>
-<!--                                    <a href="#"><i class="icon-pencil"></i></a>-->
-<!--                                    <a href="#"><i class="icon-close"></i></a>-->
                                     <input type="submit" id="add_btn" style="width: 90%;background-color: silver;border: silver;border-radius: 20%;" value="添加家居"/>
                                 </td>
                             </tr>

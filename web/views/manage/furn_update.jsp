@@ -40,7 +40,23 @@
                 // alert($price.val() + " " + $sales.val() + " " + $stock.val())
                 return true
             })
+
+
         })
+
+        function prev(event) {
+            // 获取展示图片的区域
+            var img = document.getElementById("prevView");
+            // 获取文件对象
+            var file = event.files[0];
+            // 获取文件阅读器：Js 的一个类，直接使用即可
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                // 给 img 的 src 设置图片 url
+                img.setAttribute("src", this.result);
+            }
+        }
     </script>
 </head>
 
@@ -55,7 +71,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="index.html"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
+                        <a href="index.jsp"><img src="assets/images/logo/logo.png" alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -85,7 +101,7 @@
                 <!-- Header Logo Start -->
                 <div class="col-auto align-self-center">
                     <div class="header-logo">
-                        <a href="index.html"><img width="280px" src="assets/images/logo/logo.png" alt="Site Logo"/></a>
+                        <a href="index.jsp"><img width="280px" src="assets/images/logo/logo.png" alt="Site Logo"/></a>
                     </div>
                 </div>
                 <!-- Header Logo End -->
@@ -119,8 +135,46 @@
                             </thead>
                             <tbody>
                             <tr>
-                                <form action="manage/furn" method="post">
-                                    <input type="hidden" name="action" value="updateFurn">
+                                <%--<form action="manage/furn" method="post">--%>
+                                <%--    <input type="hidden" name="action" value="updateFurn">--%>
+                                <%--    <input type="hidden" name="id" value="${requestScope.furn.id}">--%>
+                                <%--    <input type="hidden" name="imgUrl" value="${requestScope.furn.imgUrl}">--%>
+                                <%--    &lt;%&ndash;通过 param.pageNo 获取上个页面发送过来的 pageNo 对象&ndash;%&gt;--%>
+                                <%--    &lt;%&ndash;需要将 pageNo 传到 updateFurn 方法去&ndash;%&gt;--%>
+                                <%--    <input type="hidden" name="pageNo" value="${param.pageNo}">--%>
+                                <%--    <td class="product-thumbnail">--%>
+                                <%--        <div id="pic">--%>
+                                <%--            <img id="prevView" class="img-responsive ml-3"--%>
+                                <%--                 src="${requestScope.furn.imgUrl}"--%>
+                                <%--                 alt=""/>--%>
+                                <%--            <input type="file" name="imgPath" id="" value="" onchange="prev(this)"/>--%>
+                                <%--        </div>--%>
+                                <%--    </td>--%>
+                                <%--    <td class="product-name"><input name="name" style="width: 60%" type="text"--%>
+                                <%--                                    value="${requestScope.furn.name}"/></td>--%>
+                                <%--    <td class="product-name"><input name="maker" style="width: 90%" type="text"--%>
+                                <%--                                    value="${requestScope.furn.maker}"/></td>--%>
+                                <%--    <td class="product-price-cart"><input name="price" style="width: 90%" type="text" id="price"--%>
+                                <%--                                          value="${requestScope.furn.price}"/></td>--%>
+                                <%--    <td class="product-quantity">--%>
+                                <%--        <input name="sales" style="width: 90%" type="text" id="sales"--%>
+                                <%--               value="${requestScope.furn.sales}"/>--%>
+                                <%--    </td>--%>
+                                <%--    <td class="product-quantity">--%>
+                                <%--        <input name="stock" style="width: 90%" type="text" id="stock"--%>
+                                <%--               value="${requestScope.furn.stock}"/>--%>
+                                <%--    </td>--%>
+                                <%--    <td>--%>
+                                <%--        <!--<a href="#"><i class="icon-pencil"></i></a>-->--%>
+                                <%--        <!--<a href="#"><i class="icon-close"></i></a>-->--%>
+                                <%--        <input type="submit"--%>
+                                <%--               style="width: 90%;background-color: silver;border: silver;border-radius: 20%;"--%>
+                                <%--               value="修改家居" id="update_btn"/>--%>
+                                <%--    </td>--%>
+                                <%--</form>--%>
+
+                                <%--包含文件表单的上传--%>
+                                <form action="manage/furn?action=updateFurnByPic" method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="id" value="${requestScope.furn.id}">
                                     <input type="hidden" name="imgUrl" value="${requestScope.furn.imgUrl}">
                                     <%--通过 param.pageNo 获取上个页面发送过来的 pageNo 对象--%>
@@ -225,7 +279,7 @@
                 <div class="row flex-sm-row-reverse">
                     <div class="col-md-6 text-right">
                         <div class="payment-link">
-                            <img src="#" alt="">
+                            <%--<img src="#" alt="">--%>
                         </div>
                     </div>
                     <div class="col-md-6 text-left">
