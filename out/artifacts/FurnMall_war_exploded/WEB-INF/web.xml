@@ -149,8 +149,8 @@
     </error-page>
 
     <!--500 页面错误提示-->
-    <error-page>
-        <error-code>500</error-code>
-        <location>/views/error/500.jsp</location>
-    </error-page>
+    <!--<error-page>-->
+    <!--    <error-code>500</error-code>-->
+    <!--    <location>/views/error/500.jsp</location>-->
+    <!--</error-page>-->
 </web-app>

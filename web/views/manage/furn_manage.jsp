@@ -149,6 +149,37 @@
         </div>
         <%--导航条开始位置--%>
         <div class="pro-pagination-style text-center mb-md-30px mb-lm-30px mt-6" data-aos="fade-up">
+            <%--1 如果总页数 <=5, 就全部显示--%>
+            <%--2 如果总页数 >5, 按照如下规则显示(这个规则是程序员 / 业务来确定)--%>
+            <%--2.1 如果当前页是前 3 页, 就显示 1-5--%>
+            <%--2.2 如果当前页是后 3 页, 就显示最后 5 页--%>
+            <%--2.3 如果当前页是中间页, 就显示当前页前 2 页, 当前页, 当前页后两页--%>
+            <c:choose>
+                <%--1 如果总页数 <=5, 就全部显示--%>
+                <c:when test="${requestScope.page.totalPageCount <= 5}">
+                    <c:set var="begin" value="1" />
+                    <c:set var="end" value="${requestScope.page.totalPageCount}" />
+                </c:when>
+                <c:when test="${requestScope.page.totalPageCount > 5}">
+                    <c:choose>
+                        <%--2.1 如果当前页是前 3 页, 就显示 1-5--%>
+                        <c:when test="${requestScope.page.currentPageNo <= 3}">
+                            <c:set var="begin" value="1" />
+                            <c:set var="end" value="5" />
+                        </c:when>
+                        <%--2.2 如果当前页是后 3 页, 就显示最后 5 页--%>
+                        <c:when test="${requestScope.page.currentPageNo > requestScope.page.totalPageCount - 3}">
+                            <c:set var="begin" value="${requestScope.page.totalPageCount - 4}" />
+                            <c:set var="end" value="${requestScope.page.totalPageCount}" />
+                        </c:when>
+                        <%--2.3 如果当前页是中间页, 就显示当前页前 2 页, 当前页, 当前页后两页--%>
+                        <c:otherwise>
+                            <c:set var="begin" value="${requestScope.page.currentPageNo - 2}" />
+                            <c:set var="end" value="${requestScope.page.currentPageNo + 2}" />
+                        </c:otherwise>
+                    </c:choose>
+                </c:when>
+            </c:choose>
             <ul>
                 <%--如果当前页大于 1，才显示上一页--%>
                 <c:if test="${requestScope.page.currentPageNo > 1}">
@@ -157,7 +188,7 @@
 
                 <%--requestScope.page.totalPageCount 表示总页数，从 1 到总页数循环展示--%>
                 <%--这样展示所有页数，如果页数过多会显示不下，后续优化导航条最多展示个数--%>
-                <c:forEach begin="1" end="${requestScope.page.totalPageCount}" var="index">
+                <c:forEach begin="${begin}" end="${end}" var="index">
                     <c:choose>
                         <%--如果是当前选中的页数，需要设置 class="active" 属性--%>
                         <c:when test="${requestScope.page.currentPageNo == index}">
