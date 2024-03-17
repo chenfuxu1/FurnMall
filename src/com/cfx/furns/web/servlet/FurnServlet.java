@@ -4,10 +4,7 @@ import com.cfx.furns.entity.Furn;
 import com.cfx.furns.entity.Page;
 import com.cfx.furns.service.IFurnService;
 import com.cfx.furns.service.serviceimpl.FurnServiceImpl;
-import com.cfx.furns.utils.Constants;
-import com.cfx.furns.utils.DataUtils;
-import com.cfx.furns.utils.Logit;
-import com.cfx.furns.utils.StringToNumUtils;
+import com.cfx.furns.utils.*;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -19,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Project: FurnMall
@@ -217,12 +215,22 @@ public class FurnServlet extends BaseServlet {
                             realFilePath = realFilePath.replace("\\", "/");
                             Logit.d(TAG, "realFilePath: " + realFilePath);
 
+                            // 将文件的路径加上每天的日期，每天分日期进行存放
+                            realFilePath = realFilePath + WebUtils.getYearMonthDay();
+
                             // 8.3 创建这个上传的目录
                             File file = new File(realFilePath);
                             if (!file.exists()) {
                                 // 如果文件夹不存在，就创建
                                 file.mkdir();
                             }
+
+                            // 为了防止文件名重复，会发生文件覆盖的情况，可以在文件名前加 uuid 来区分重复上传的文件
+                            // fileName = UUID.randomUUID().toString() + "_" + fileName;
+
+                            // 如果再担心发生重复，可以加上当前的时间戳
+                            fileName = UUID.randomUUID().toString() + "-" + System.currentTimeMillis() + "_" + fileName;
+
                             // 8.4 将临时目录下的文件 copy 到创建的这个目录 realFilePath 下面
                             String fileAbsolutePath = realFilePath + fileName;
                             Logit.d(TAG, "fileAbsolutePath: " + fileAbsolutePath);
@@ -230,7 +238,7 @@ public class FurnServlet extends BaseServlet {
                         } else {
                             fileName = "default.jpg";
                         }
-                        furn.setImgUrl("assets/images/product-image/" + fileName);
+                        furn.setImgUrl("assets/images/product-image/" + WebUtils.getYearMonthDay() + fileName);
                     } else {
                         // 表明是普通文本
                         String editBoxValue = fileItem.getString("utf-8");
@@ -438,12 +446,22 @@ public class FurnServlet extends BaseServlet {
                             realFilePath = realFilePath.replace("\\", "/");
                             Logit.d(TAG, "realFilePath: " + realFilePath);
 
+                            // 将文件的路径加上每天的日期，每天分日期进行存放
+                            realFilePath = realFilePath + WebUtils.getYearMonthDay();
+
                             // 8.3 创建这个上传的目录
                             File file = new File(realFilePath);
                             if (!file.exists()) {
                                 // 如果文件夹不存在，就创建
                                 file.mkdir();
                             }
+
+                            // 为了防止文件名重复，会发生文件覆盖的情况，可以在文件名前加 uuid 来区分重复上传的文件
+                            // fileName = UUID.randomUUID().toString() + "_" + fileName;
+
+                            // 如果再担心发生重复，可以加上当前的时间戳
+                            fileName = UUID.randomUUID().toString() + "-" + System.currentTimeMillis() + "_" + fileName;
+
                             // 8.4 将临时目录下的文件 copy 到创建的这个目录 realFilePath 下面
                             String fileAbsolutePath = realFilePath + fileName;
                             Logit.d(TAG, "fileAbsolutePath: " + fileAbsolutePath);
@@ -452,7 +470,7 @@ public class FurnServlet extends BaseServlet {
                             fileName = "default.jpg";
                         }
 
-                        furn.setImgUrl("assets/images/product-image/" + fileName);
+                        furn.setImgUrl("assets/images/product-image/" + WebUtils.getYearMonthDay() + fileName);
                     } else {
                         // 表明是普通文本
                         String editBoxValue = fileItem.getString("utf-8");
@@ -479,6 +497,18 @@ public class FurnServlet extends BaseServlet {
                                 break;
                         }
                     }
+                }
+                Furn oldFurn = mFurnService.queryFurnById(furn.getId());
+                if (oldFurn != null) {
+                    String imgUrl = oldFurn.getImgUrl();
+                    imgUrl = "/" + imgUrl;
+                    String realFilePath = req.getServletContext().getRealPath(imgUrl);
+                    realFilePath = realFilePath.replace("\\", "/");
+                    Logit.d(TAG, "deleteFilePath: " + realFilePath);
+                    File file = new File(realFilePath);
+                    boolean isDelete = file.delete();
+                    Logit.d(TAG, "isDelete: " + isDelete);
+
                 }
             } catch (Exception e) {
                 Logit.d(TAG, "doPost Exception: " + e);

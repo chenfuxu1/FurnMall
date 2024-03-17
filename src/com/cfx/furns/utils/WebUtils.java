@@ -2,6 +2,7 @@ package com.cfx.furns.utils;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 
 /**
  * Project: FurnMall
@@ -23,5 +24,14 @@ public class WebUtils {
             return false;
         }
         return "XMLHttpRequest".equals(requestedWith);
+    }
+
+    public static String getYearMonthDay() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        int year = localDateTime.getYear();
+        int month = localDateTime.getMonthValue();
+        int day = localDateTime.getDayOfMonth();
+        String yearMonthDay = year + "-" + month + "-" + day + "/";
+        return yearMonthDay;
     }
 }
