@@ -13,6 +13,11 @@
             <param-name>excludedUrls</param-name>
             <param-value>/views/manage/manage_login.jsp,/views/member/login.jsp</param-value>
         </init-param>
+        <init-param>
+            <!--这里配置只有管理员才能访问的 url-->
+            <param-name>adminCanUseUrls</param-name>
+            <param-value>/views/manage/furn_add.jsp,/views/manage/furn_manage.jsp,/views/manage/furn_update.jsp,/views/manage/manage_menu.jsp</param-value>
+        </init-param>
     </filter>
 
     <filter-mapping>
@@ -144,8 +149,8 @@
     </error-page>
 
     <!--500 页面错误提示-->
-    <!--<error-page>-->
-    <!--    <error-code>500</error-code>-->
-    <!--    <location>/views/error/500.jsp</location>-->
-    <!--</error-page>-->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/views/error/500.jsp</location>
+    </error-page>
 </web-app>

@@ -7,6 +7,8 @@ import com.cfx.furns.service.IAdminService;
 import com.cfx.furns.utils.Logit;
 import com.cfx.furns.utils.MD5Utils;
 
+import java.util.List;
+
 /**
  * Project: FurnMall
  * Create By: Chen.F.X
@@ -45,5 +47,10 @@ public class AdminServiceImpl implements IAdminService {
         }
         Logit.d(TAG, "管理员登录成功");
         return true;
+    }
+
+    @Override
+    public List<Admin> getAllAdmins() {
+        return mAdminDao.getAllAdmins();
     }
 }
