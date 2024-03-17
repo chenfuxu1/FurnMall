@@ -19,5 +19,5 @@ public class Constants {
     public static final String STATUS_NO_SEND = "未发货";
     public static final String ORDER_ID = "orderId";
 
-    public static final int PAGE_SIZE = 1; // 每页显示的数据大小
+    public static final int PAGE_SIZE = 4; // 每页显示的数据大小
 }

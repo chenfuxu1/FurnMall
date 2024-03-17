@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="FurnMall:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/FurnMall_war</output-path>
+    <root id="archive" name="FurnMall_war.war">
+      <element id="artifact" artifact-name="FurnMall:war exploded" />
+    </root>
+  </artifact>
+</component>
